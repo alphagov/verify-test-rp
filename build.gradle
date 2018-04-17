@@ -180,7 +180,7 @@ task intTest(type: Test) {
 ext.mainclass = 'uk.gov.ida.rp.testrp.TestRpApplication'
 mainClassName = ext.mainclass
 
-jar.baseName = 'ida-sample-rp'
+jar.baseName = 'verify-test-rp'
 
 task copyToLib(dependsOn: jar, type: Copy) {
     into "$buildDir/output/lib"
