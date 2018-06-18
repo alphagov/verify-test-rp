@@ -34,6 +34,16 @@ import static uk.gov.ida.rp.testrp.builders.AttributeBuilder.anAttribute;
 @RunWith(MockitoJUnitRunner.class)
 public class AuthnResponseReceiverHandlerTest {
 
+    /*
+    This is a workaround until the following fix is made:
+        https://github.com/Squarespace/jersey2-guice/pull/39
+    See here for workaround:
+        https://github.com/dropwizard/dropwizard/issues/1772
+     */
+    static {
+        JerseyGuiceUtils.install((s, serviceLocator) -> null);
+    }
+
     @BeforeClass
     public static void beforeClass() throws InitializationException {
         JerseyGuiceUtils.reset();
