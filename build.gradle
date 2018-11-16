@@ -91,7 +91,9 @@ dependencies {
             'org.slf4j:slf4j-api:1.7.10',
             //need this to be fixed - https://github.com/Squarespace/jersey2-guice/pull/39
             'com.hubspot.dropwizard:dropwizard-guicier:1.0.0.6',
-            'com.squarespace.jersey2-guice:0-jersey2-guice-spi:1.0.6'
+            'com.squarespace.jersey2-guice:0-jersey2-guice-spi:1.0.6',
+            'javax.activation:javax.activation-api:1.2.0',
+            'javax.xml.bind:jaxb-api:2.2.3'
 
     dropwizard 'io.dropwizard:dropwizard-core:' + dependencyVersions.dropwizard,
             'io.dropwizard:dropwizard-client:' + dependencyVersions.dropwizard,
