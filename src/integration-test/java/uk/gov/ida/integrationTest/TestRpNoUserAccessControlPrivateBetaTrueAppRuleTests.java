@@ -6,13 +6,11 @@ import io.dropwizard.client.JerseyClientConfiguration;
 import io.dropwizard.testing.ConfigOverride;
 import io.dropwizard.testing.ResourceHelpers;
 import io.dropwizard.util.Duration;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 import uk.gov.ida.integrationTest.support.IntegrationTestHelper;
 import uk.gov.ida.integrationTest.support.TestRpAppRule;
-import uk.gov.ida.integrationTest.support.TokenServiceStubRule;
 import uk.gov.ida.jerseyclient.JerseyClientConfigurationBuilder;
 import uk.gov.ida.rp.testrp.Urls;
 
@@ -27,16 +25,12 @@ public class TestRpNoUserAccessControlPrivateBetaTrueAppRuleTests extends Integr
 
     private static Client client;
 
-    private static final String AUTHORIZED_TOKEN_VALUE = "foovalue";
-
-    @ClassRule
-    public static TokenServiceStubRule tokenServiceStubRule = new TokenServiceStubRule();
+    private static final String AUTHORIZED_TOKEN_VALUE = "eyJhbGciOiJSUzUxMiJ9.eyJlcG9jaCI6MSwidmFsaWRfdW50aWwiOiIyMTE4LTExLTI3VDExOjMwOjAwLjAwMFoiLCJpc3N1ZWRfdG8iOiJ3aWxscC1ibCJ9.rFS6Gx3kb8OTniEHXtWBttoqu-dY_GhwWsWyQcA9wQAGC0EpuRy_EaGYljvhFbXsKKJ1mQsps4pQg6E5QP1g9GFxX_FRWyxKW0GkBe_eT5aCtm6Z9Xzi4VyfyeJEVqUk__fPNwACBpJRsYqL53i3T9S1pegWG16rx6eCykQ_jFLDJnPo6n5QMSp6e0dI4gxbYpntNCFbDh5nD4TpHFG405fs43e4DfJXlPhJ_sThHiZXfKWW4AQbQ7HSAfLC8COs-p8UnaohRCkiDShlzoHII6NUAXbAq6_EEsigPEm3i3dLzpWf9FYstLuu99iUoWRPzK3JadJ4_6snMwATvTnD9Q";
 
     @ClassRule
     public static TestRpAppRule testRp = TestRpAppRule.newTestRpAppRule(
             ConfigOverride.config("clientTrustStoreConfiguration.path", ResourceHelpers.resourceFilePath("ida_truststore.ts")),
-            ConfigOverride.config("privateBetaUserAccessRestrictionEnabled", "true"),
-            ConfigOverride.config("tokenServiceUrl", tokenServiceStubRule.baseUri().build().toASCIIString())
+            ConfigOverride.config("privateBetaUserAccessRestrictionEnabled", "true")
     );
 
     @BeforeClass
@@ -45,15 +39,8 @@ public class TestRpNoUserAccessControlPrivateBetaTrueAppRuleTests extends Integr
         client = new JerseyClientBuilder(testRp.getEnvironment()).using(jerseyClientConfiguration).build(TestRpNoUserAccessControlPrivateBetaTrueAppRuleTests.class.getSimpleName());
     }
 
-    @Before
-    public void resetStubRules() {
-        tokenServiceStubRule.reset();
-    }
-
     @Test
-    public void getLandingPage_withValidToken_shouldReturnTestRpLandingPageView() throws JsonProcessingException {
-        tokenServiceStubRule.stubValidTokenResponse(AUTHORIZED_TOKEN_VALUE);
-
+    public void getLandingPage_withValidToken_shouldReturnTestRpLandingPageView() {
         URI uri = testRp.uri(Urls.TestRpUrls.TEST_RP_ROOT);
         Response response = client.target(uri)
                 .queryParam(Urls.Params.ACCESS_TOKEN_PARAM, AUTHORIZED_TOKEN_VALUE)
@@ -65,9 +52,8 @@ public class TestRpNoUserAccessControlPrivateBetaTrueAppRuleTests extends Integr
     }
 
     @Test
-    public void getLandingPage_withInvalidToken_shouldReturnTestRpLandingPage() throws JsonProcessingException {
+    public void getLandingPage_withInvalidToken_shouldReturnTestRpLandingPage() {
         String invalidToken = "some-invalid-value";
-        tokenServiceStubRule.stubInvalidTokenResponse(invalidToken);
 
         Response response = client.target(testRp.uri(Urls.TestRpUrls.TEST_RP_ROOT))
                 .queryParam(Urls.Params.ACCESS_TOKEN_PARAM, invalidToken)
@@ -81,7 +67,6 @@ public class TestRpNoUserAccessControlPrivateBetaTrueAppRuleTests extends Integr
     @Test
     public void getLandingPage_withMissingToken_shouldReturnTestRpLandingPage() throws JsonProcessingException {
 
-        tokenServiceStubRule.stubInvalidTokenResponse("");
         Response response = client.target(testRp.uri(Urls.TestRpUrls.TEST_RP_ROOT))
                 .request()
                 .get(Response.class);

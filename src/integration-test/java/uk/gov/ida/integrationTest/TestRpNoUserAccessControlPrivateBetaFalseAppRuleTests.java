@@ -1,18 +1,15 @@
 package uk.gov.ida.integrationTest;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.client.JerseyClientConfiguration;
 import io.dropwizard.testing.ConfigOverride;
 import io.dropwizard.testing.ResourceHelpers;
 import io.dropwizard.util.Duration;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 import uk.gov.ida.integrationTest.support.IntegrationTestHelper;
 import uk.gov.ida.integrationTest.support.TestRpAppRule;
-import uk.gov.ida.integrationTest.support.TokenServiceStubRule;
 import uk.gov.ida.jerseyclient.JerseyClientConfigurationBuilder;
 import uk.gov.ida.rp.testrp.Urls;
 
@@ -30,12 +27,8 @@ public class TestRpNoUserAccessControlPrivateBetaFalseAppRuleTests extends Integ
     private static final String AUTHORIZED_TOKEN_VALUE = "foovalue";
 
     @ClassRule
-    public static TokenServiceStubRule tokenServiceStubRule = new TokenServiceStubRule();
-
-    @ClassRule
     public static TestRpAppRule testRp = TestRpAppRule.newTestRpAppRule(
-            ConfigOverride.config("clientTrustStoreConfiguration.path", ResourceHelpers.resourceFilePath("ida_truststore.ts")),
-            ConfigOverride.config("tokenServiceUrl", tokenServiceStubRule.baseUri().build().toASCIIString())
+            ConfigOverride.config("clientTrustStoreConfiguration.path", ResourceHelpers.resourceFilePath("ida_truststore.ts"))
     );
 
     @BeforeClass
@@ -44,14 +37,8 @@ public class TestRpNoUserAccessControlPrivateBetaFalseAppRuleTests extends Integ
         client = new JerseyClientBuilder(testRp.getEnvironment()).using(jerseyClientConfiguration).build(TestRpNoUserAccessControlPrivateBetaFalseAppRuleTests.class.getSimpleName());
     }
 
-    @Before
-    public void resetStubRules() {
-        tokenServiceStubRule.reset();
-    }
-
     @Test
-    public void getLandingPage_withValidToken_shouldReturnTestRpLandingPageView() throws JsonProcessingException {
-        tokenServiceStubRule.stubValidTokenResponse(AUTHORIZED_TOKEN_VALUE);
+    public void getLandingPage_withValidToken_shouldReturnTestRpLandingPageView() {
 
         URI uri = testRp.uri(Urls.TestRpUrls.TEST_RP_ROOT);
         Response response = client.target(uri)
@@ -64,9 +51,8 @@ public class TestRpNoUserAccessControlPrivateBetaFalseAppRuleTests extends Integ
     }
 
     @Test
-    public void getLandingPage_withInvalidToken_shouldReturnTestRpLandingPage() throws JsonProcessingException {
+    public void getLandingPage_withInvalidToken_shouldReturnTestRpLandingPage() {
         String invalidToken = "some-invalid-value";
-        tokenServiceStubRule.stubInvalidTokenResponse(invalidToken);
 
         Response response = client.target(testRp.uri(Urls.TestRpUrls.TEST_RP_ROOT))
                 .queryParam(Urls.Params.ACCESS_TOKEN_PARAM, invalidToken)
@@ -78,9 +64,8 @@ public class TestRpNoUserAccessControlPrivateBetaFalseAppRuleTests extends Integ
     }
 
     @Test
-    public void getLandingPage_withMissingToken_shouldReturnTestRpLandingPage() throws JsonProcessingException {
+    public void getLandingPage_withMissingToken_shouldReturnTestRpLandingPage() {
 
-        tokenServiceStubRule.stubInvalidTokenResponse("");
         Response response = client.target(testRp.uri(Urls.TestRpUrls.TEST_RP_ROOT))
                 .request()
                 .get(Response.class);

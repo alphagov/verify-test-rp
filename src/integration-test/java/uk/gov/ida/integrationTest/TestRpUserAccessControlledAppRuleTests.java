@@ -1,18 +1,15 @@
 package uk.gov.ida.integrationTest;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.client.JerseyClientConfiguration;
 import io.dropwizard.testing.ConfigOverride;
 import io.dropwizard.testing.ResourceHelpers;
 import io.dropwizard.util.Duration;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 import uk.gov.ida.integrationTest.support.IntegrationTestHelper;
 import uk.gov.ida.integrationTest.support.TestRpAppRule;
-import uk.gov.ida.integrationTest.support.TokenServiceStubRule;
 import uk.gov.ida.jerseyclient.JerseyClientConfigurationBuilder;
 import uk.gov.ida.rp.testrp.Urls;
 
@@ -30,17 +27,13 @@ public class TestRpUserAccessControlledAppRuleTests extends IntegrationTestHelpe
 
     private static final String SUCCESS_PATH = "/test-rp/success";
     private static final String landingPageContent = "Identity Assurance Test Service - GOV.UK";
-    private static final String AUTHORIZED_TOKEN_VALUE = "foovalue";
+    private static final String AUTHORIZED_TOKEN_VALUE = "eyJhbGciOiJSUzUxMiJ9.eyJlcG9jaCI6MSwidmFsaWRfdW50aWwiOiIyMTE4LTExLTI3VDExOjMwOjAwLjAwMFoiLCJpc3N1ZWRfdG8iOiJ3aWxscC1ibCJ9.rFS6Gx3kb8OTniEHXtWBttoqu-dY_GhwWsWyQcA9wQAGC0EpuRy_EaGYljvhFbXsKKJ1mQsps4pQg6E5QP1g9GFxX_FRWyxKW0GkBe_eT5aCtm6Z9Xzi4VyfyeJEVqUk__fPNwACBpJRsYqL53i3T9S1pegWG16rx6eCykQ_jFLDJnPo6n5QMSp6e0dI4gxbYpntNCFbDh5nD4TpHFG405fs43e4DfJXlPhJ_sThHiZXfKWW4AQbQ7HSAfLC8COs-p8UnaohRCkiDShlzoHII6NUAXbAq6_EEsigPEm3i3dLzpWf9FYstLuu99iUoWRPzK3JadJ4_6snMwATvTnD9Q";
 
     private static Client client;
 
     @ClassRule
-    public static TokenServiceStubRule tokenServiceStubRule = new TokenServiceStubRule();
-
-    @ClassRule
     public static TestRpAppRule testRp = TestRpAppRule.newTestRpAppRule(
             ConfigOverride.config("privateBetaUserAccessRestrictionEnabled", "true"),
-            ConfigOverride.config("tokenServiceUrl", tokenServiceStubRule.baseUri().build().toASCIIString()),
             ConfigOverride.config("clientTrustStoreConfiguration.path", ResourceHelpers.resourceFilePath("ida_truststore.ts"))
     );
 
@@ -50,15 +43,9 @@ public class TestRpUserAccessControlledAppRuleTests extends IntegrationTestHelpe
         client = new JerseyClientBuilder(testRp.getEnvironment()).using(jerseyClientConfiguration).build(TestRpUserAccessControlledAppRuleTests.class.getSimpleName());
     }
 
-    @Before
-    public void resetStubRules() {
-        tokenServiceStubRule.reset();
-    }
-
     @Test
-    public void getSuccessPage_withIncorrectAccessTokenCookie_shouldReturnLandingPage() throws JsonProcessingException {
+    public void getSuccessPage_withIncorrectAccessTokenCookie_shouldReturnLandingPage() {
         String invalidTokenValue = "some-invalid-token";
-        tokenServiceStubRule.stubInvalidTokenResponse(invalidTokenValue);
 
         final URI uri = testRp.uri(SUCCESS_PATH);
 
@@ -86,8 +73,7 @@ public class TestRpUserAccessControlledAppRuleTests extends IntegrationTestHelpe
     }
     
     @Test
-    public void getLandingPage_visitWithQueryParamShouldSetTokenCookieSoHubCanRedirectToLandingPageWithoutQueryParam() throws JsonProcessingException {
-        tokenServiceStubRule.stubValidTokenResponse(AUTHORIZED_TOKEN_VALUE);
+    public void getLandingPage_visitWithQueryParamShouldSetTokenCookieSoHubCanRedirectToLandingPageWithoutQueryParam() {
 
         Response response = requestLandingPageWithToken();
         assertThat(response.getCookies().values()).contains(new NewCookie(ACCESS_TOKEN_COOKIE_NAME, AUTHORIZED_TOKEN_VALUE));

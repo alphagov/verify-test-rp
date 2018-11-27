@@ -34,18 +34,6 @@ public class TestRpConfiguration extends Configuration implements AssetCacheConf
     protected JerseyClientConfiguration httpClient;
 
     @Valid
-    @JsonProperty
-    protected String tokenServiceUrl;
-
-    @Valid
-    @JsonProperty
-    protected String tokenServiceUser;
-
-    @Valid
-    @JsonProperty
-    protected String tokenServicePassword;
-
-    @Valid
     @NotNull
     @JsonProperty
     protected String javascriptPath;
@@ -140,6 +128,11 @@ public class TestRpConfiguration extends Configuration implements AssetCacheConf
     @JsonProperty
     protected String hubEntityId = "https://signin.service.gov.uk";
 
+    @NotNull
+    @Valid
+    @JsonProperty
+    protected int tokenEpoch = 1;
+
     protected TestRpConfiguration() {}
 
     public String getHubEntityId() {
@@ -160,18 +153,6 @@ public class TestRpConfiguration extends Configuration implements AssetCacheConf
 
     public boolean isPrivateBetaUserAccessRestrictionEnabled() {
         return privateBetaUserAccessRestrictionEnabled;
-    }
-
-    public String getTokenServiceUrl() {
-        return tokenServiceUrl;
-    }
-
-    public String getTokenServiceUser() {
-        return tokenServiceUser;
-    }
-
-    public String getTokenServicePassword() {
-        return tokenServicePassword;
     }
 
     public boolean shouldCacheAssets() {
@@ -243,5 +224,8 @@ public class TestRpConfiguration extends Configuration implements AssetCacheConf
         return shouldShowStartWithEidasButton;
     }
 
+    public int getTokenEpoch() {
+        return tokenEpoch;
+    }
 
 }
