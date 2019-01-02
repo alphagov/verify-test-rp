@@ -2,7 +2,7 @@ package uk.gov.ida.rp.testrp.contract;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
+import com.fasterxml.jackson.databind.util.StdDateFormat;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -14,7 +14,6 @@ import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import uk.gov.ida.rp.testrp.builders.UniversalAddressDtoBuilder;
-import uk.gov.ida.rp.testrp.builders.UniversalMatchingDatasetDtoBuilder;
 import uk.gov.ida.rp.testrp.builders.SimpleMdsValueDtoBuilder;
 
 import java.io.IOException;
@@ -35,7 +34,7 @@ public class MatchingServiceRequestDtoTest {
 
     @Before
     public void setUp() throws Exception {
-        objectMapper = Jackson.newObjectMapper().setDateFormat(ISO8601DateFormat.getDateInstance());
+        objectMapper = Jackson.newObjectMapper().setDateFormat(StdDateFormat.getDateInstance());
         objectMapper.registerModule(new Jdk8Module());
     }
 

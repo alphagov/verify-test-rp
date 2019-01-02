@@ -2,7 +2,7 @@ package uk.gov.ida.rp.testrp.contract;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
+import com.fasterxml.jackson.databind.util.StdDateFormat;
 import io.dropwizard.jackson.Jackson;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +18,7 @@ public class MatchingServiceResponseDtoTest {
 
     @Before
     public void setUp() throws Exception {
-        objectMapper = Jackson.newObjectMapper().setDateFormat(ISO8601DateFormat.getDateInstance());
+        objectMapper = Jackson.newObjectMapper().setDateFormat(StdDateFormat.getDateInstance());
     }
 
     @Test
