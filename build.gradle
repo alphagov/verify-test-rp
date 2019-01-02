@@ -91,7 +91,10 @@ dependencies {
             'org.slf4j:slf4j-api:1.7.10',
             //need this to be fixed - https://github.com/Squarespace/jersey2-guice/pull/39
             'com.hubspot.dropwizard:dropwizard-guicier:1.0.0.6',
-            'com.squarespace.jersey2-guice:0-jersey2-guice-spi:1.0.6'
+            'com.squarespace.jersey2-guice:0-jersey2-guice-spi:1.0.6',
+            'javax.xml.bind:jaxb-api:2.3.1',
+            'com.sun.xml.bind:jaxb-core:2.3.0.1',
+            'com.sun.xml.bind:jaxb-impl:2.3.0'
 
     dropwizard 'io.dropwizard:dropwizard-core:' + dependencyVersions.dropwizard,
             'io.dropwizard:dropwizard-client:' + dependencyVersions.dropwizard,
@@ -181,7 +184,7 @@ sourceSets {
 }
 
 task intTest(type: Test) {
-    testClassesDir = sourceSets.integrationTest.output.classesDir
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath += sourceSets.integrationTest.runtimeClasspath
 }
 

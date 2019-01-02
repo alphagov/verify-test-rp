@@ -1,9 +1,9 @@
 package uk.gov.ida.rp.testrp.controllogic;
 
 import com.google.common.base.Joiner;
+import com.google.common.collect.ImmutableList;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml2.core.Attribute;
-import org.parboiled.common.ImmutableList;
 import uk.gov.ida.common.SessionId;
 import uk.gov.ida.rp.testrp.domain.ResponseFromHub;
 import uk.gov.ida.rp.testrp.repositories.Session;
