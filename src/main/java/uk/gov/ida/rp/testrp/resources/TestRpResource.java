@@ -10,7 +10,7 @@ import uk.gov.ida.rp.testrp.domain.PageErrorMessageDetails;
 import uk.gov.ida.rp.testrp.domain.PageErrorMessageDetailsFactory;
 import uk.gov.ida.rp.testrp.repositories.Session;
 import uk.gov.ida.rp.testrp.repositories.SessionRepository;
-import uk.gov.ida.rp.testrp.tokenservice.AccessTokenValidator;
+import uk.gov.ida.rp.testrp.tokenservice.TokenService;
 import uk.gov.ida.rp.testrp.views.TestRpLandingPageView;
 import uk.gov.ida.rp.testrp.views.TestRpSuccessPageView;
 import uk.gov.ida.saml.core.domain.TransactionIdaStatus;
@@ -36,21 +36,22 @@ import static uk.gov.ida.rp.testrp.tokenservice.AccessTokenCookieName.ACCESS_TOK
 @Path(Urls.TestRpUrls.TEST_RP_ROOT)
 @Produces(MediaType.TEXT_HTML)
 public class TestRpResource {
+
     private final SessionRepository sessionRepository;
     private final TestRpConfiguration configuration;
     private final PageErrorMessageDetailsFactory pageErrorMessageDetailsFactory;
-    private final AccessTokenValidator tokenValidator;
+    private final TokenService tokenService;
 
     @Inject
     public TestRpResource(
             SessionRepository sessionRepository,
             TestRpConfiguration configuration,
             PageErrorMessageDetailsFactory pageErrorMessageDetailsFactory,
-            AccessTokenValidator tokenValidator) {
+            TokenService tokenService) {
         this.sessionRepository = sessionRepository;
         this.configuration = configuration;
         this.pageErrorMessageDetailsFactory = pageErrorMessageDetailsFactory;
-        this.tokenValidator = tokenValidator;
+        this.tokenService = tokenService;
     }
 
     @GET
@@ -67,7 +68,7 @@ public class TestRpResource {
             token = of(cookieToken);
         }
 
-        tokenValidator.validate(token);
+        tokenService.validate(token);
 
         final PageErrorMessageDetails errorMessageDetails = pageErrorMessageDetailsFactory.getErrorMessage(errorCode);
         final TestRpLandingPageView testRpLandingPageView = new TestRpLandingPageView(configuration.getJavascriptPath(), configuration.getStylesheetsPath(), configuration.getImagesPath(), null, errorMessageDetails.getHeader(), errorMessageDetails.getMessage(), configuration.getShouldShowStartWithEidasButton());
@@ -76,9 +77,7 @@ public class TestRpResource {
                 .status(Response.Status.OK)
                 .entity(testRpLandingPageView);
 
-        if(token.isPresent()) {
-            builder.cookie(new NewCookie(ACCESS_TOKEN_COOKIE_NAME, token.get().toString()));
-        }
+        token.ifPresent(accessToken -> builder.cookie(new NewCookie(ACCESS_TOKEN_COOKIE_NAME, accessToken.toString())));
 
         return builder.build();
     }

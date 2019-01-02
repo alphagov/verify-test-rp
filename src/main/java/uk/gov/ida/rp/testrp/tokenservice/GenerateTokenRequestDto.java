@@ -6,30 +6,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.joda.time.DateTime;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TokenDto {
-    private int epoch;
+public class GenerateTokenRequestDto {
     private DateTime validUntil;
-    private String issuedTo;
+    private String issueTo;
 
     // all of these annotations are required, otherwise an error won't be thrown for missing fields
     @JsonCreator
-    public TokenDto(@JsonProperty(value = "epoch", required = true) int epoch,
-                     @JsonProperty(value = "validUntil", required = true) DateTime validUntil,
-                     @JsonProperty(value = "issuedTo", required = true) String issuedTo) {
-        this.epoch = epoch;
+    public GenerateTokenRequestDto(@JsonProperty(value = "validUntil", required = true) DateTime validUntil,
+                                   @JsonProperty(value = "issueTo", required = true) String issueTo) {
         this.validUntil = validUntil;
-        this.issuedTo = issuedTo;
-    }
-
-    public int getEpoch() {
-        return epoch;
+        this.issueTo = issueTo;
     }
 
     public DateTime getValidUntil() {
         return validUntil;
     }
 
-    public String getIssuedTo() {
-        return issuedTo;
+    public String getIssueTo() {
+        return issueTo;
     }
 }

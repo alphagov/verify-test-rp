@@ -13,7 +13,7 @@ import uk.gov.ida.rp.testrp.TestRpConfiguration;
 import uk.gov.ida.rp.testrp.controllogic.AuthnRequestSenderHandler;
 import uk.gov.ida.rp.testrp.domain.JourneyHint;
 import uk.gov.ida.rp.testrp.repositories.Session;
-import uk.gov.ida.rp.testrp.tokenservice.AccessTokenValidator;
+import uk.gov.ida.rp.testrp.tokenservice.TokenService;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.container.ContainerRequestContext;
@@ -55,10 +55,10 @@ public class TestRpSessionFactoryTest {
     private SimpleAuthenticator authenticator;
 
     @Mock
-    private AccessTokenValidator accessTokenValidator;
+    private AuthnRequestSenderHandler authnRequestManager;
 
     @Mock
-    private AuthnRequestSenderHandler authnRequestManager;
+    private TokenService tokenService;
 
     @Mock
     private ResourceContext resourceContext;
@@ -95,7 +95,7 @@ public class TestRpSessionFactoryTest {
         factory = new SessionFactory(authenticator,
                 configuration,
                 authnRequestManager,
-                accessTokenValidator);
+                tokenService);
 
         setContextUsingReflection(factory);
     }

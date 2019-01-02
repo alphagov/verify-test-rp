@@ -29,6 +29,7 @@ import uk.gov.ida.rp.testrp.resources.CookiesInfoResource;
 import uk.gov.ida.rp.testrp.resources.HeadlessRpResource;
 import uk.gov.ida.rp.testrp.resources.LocalMatchingServiceResource;
 import uk.gov.ida.rp.testrp.resources.TestRpResource;
+import uk.gov.ida.rp.testrp.resources.TokenResource;
 import uk.gov.ida.saml.core.IdaSamlBootstrap;
 import uk.gov.ida.saml.metadata.MetadataHealthCheck;
 
@@ -113,6 +114,7 @@ public class TestRpApplication extends Application<TestRpConfiguration> {
         environment.jersey().register(AuthnResponseReceiverResource.class);
         environment.jersey().register(LocalMatchingServiceResource.class);
         environment.jersey().register(CookiesInfoResource.class);
+        environment.jersey().register(TokenResource.class);
 
         //exception mappers
         environment.jersey().register(InvalidAccessTokenExceptionMapper.class);

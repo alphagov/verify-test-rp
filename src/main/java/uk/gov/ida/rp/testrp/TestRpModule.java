@@ -33,10 +33,7 @@ import uk.gov.ida.rp.testrp.saml.transformers.IdaAuthnRequestFromTransactionToAu
 import uk.gov.ida.rp.testrp.saml.transformers.InboundResponseFromHubUnmarshaller;
 import uk.gov.ida.rp.testrp.saml.transformers.SamlResponseToIdaResponseTransformer;
 import uk.gov.ida.rp.testrp.saml.validators.NoOpStringSizeValidator;
-import uk.gov.ida.rp.testrp.tokenservice.AccessTokenValidator;
-import uk.gov.ida.rp.testrp.tokenservice.NoOpAccessTokenValidator;
-import uk.gov.ida.rp.testrp.tokenservice.TokenServiceAccessValidator;
-import uk.gov.ida.rp.testrp.tokenservice.TokenServiceClient;
+import uk.gov.ida.rp.testrp.tokenservice.TokenService;
 import uk.gov.ida.rp.testrp.views.NonCachingFreemarkerViewRenderer;
 import uk.gov.ida.rp.testrp.views.SamlAuthnRequestRedirectViewFactory;
 import uk.gov.ida.saml.core.OpenSamlXmlObjectFactory;
@@ -95,14 +92,13 @@ public class TestRpModule extends AbstractModule {
 
         bind(SessionRepository.class).in(Singleton.class);
 
-        bind(TokenServiceClient.class);
+        bind(TokenService.class);
         bind(MetadataResolver.class).toProvider(MetadataResolverProvider.class).in(Singleton.class);
 
         bind(AuthnRequestSenderHandler.class);
         bind(SamlAuthnRequestRedirectViewFactory.class);
         bind(PageErrorMessageDetailsFactory.class);
         bind(MatchingServiceRequestHandler.class);
-        bind(TokenServiceAccessValidator.class);
         bind(AuthnResponseReceiverHandler.class);
 
         //must be eager singletons to be auto injected
@@ -142,20 +138,6 @@ public class TestRpModule extends AbstractModule {
     @Provides
     private DigestAlgorithm provideDigestAlgorithm() {
         return digestAlgorithm;
-    }
-
-    @Provides
-    @Singleton
-    private AccessTokenValidator provideAccessTokenValidator(TestRpConfiguration configuration, Injector injector) {
-        LOG.info("Configuring Feature Flags");
-
-        if(configuration.isPrivateBetaUserAccessRestrictionEnabled()) {
-            LOG.info("--- {} has been toggled ON ---", PRIVATE_BETA_ACCESS_RESTRICTION);
-        } else {
-            LOG.warn("--- {} has been toggled OFF ---", PRIVATE_BETA_ACCESS_RESTRICTION);
-            return new NoOpAccessTokenValidator();
-        }
-        return injector.getInstance(TokenServiceAccessValidator.class);
     }
 
     @Provides

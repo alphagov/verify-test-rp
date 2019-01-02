@@ -11,10 +11,8 @@ import uk.gov.ida.rp.testrp.TestRpConfiguration;
 import uk.gov.ida.rp.testrp.controllogic.AuthnRequestSenderHandler;
 import uk.gov.ida.rp.testrp.domain.AccessToken;
 import uk.gov.ida.rp.testrp.domain.JourneyHint;
-import uk.gov.ida.rp.testrp.exceptions.InvalidAccessTokenException;
-import uk.gov.ida.rp.testrp.exceptions.InvalidAccessTokenExceptionMapper;
 import uk.gov.ida.rp.testrp.repositories.Session;
-import uk.gov.ida.rp.testrp.tokenservice.AccessTokenValidator;
+import uk.gov.ida.rp.testrp.tokenservice.TokenService;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.container.ContainerRequestContext;
@@ -38,32 +36,28 @@ public class SessionFactory extends AbstractContainerRequestValueFactory<Session
     private static final Logger LOG = LoggerFactory.getLogger(SessionFactory.class);
 
     private final TestRpConfiguration configuration;
-    private final AccessTokenValidator tokenValidator;
     private final SimpleAuthenticator authenticator;
-    private final Optional<Integer> assertionConsumerServiceIndex;
     private final AuthnRequestSenderHandler authnRequestManager;
     private final String rpName;
 
     @Context
     protected ResourceContext context = null;
+    private TokenService tokenService;
 
     public SessionFactory(
             SimpleAuthenticator authenticator,
             TestRpConfiguration configuration,
             AuthnRequestSenderHandler authnRequestManager,
-            AccessTokenValidator tokenValidator) {
-
-        this.configuration = configuration;
-        this.tokenValidator = tokenValidator;
+            TokenService tokenService) {
         this.authenticator = authenticator;
+        this.configuration = configuration;
         this.authnRequestManager = authnRequestManager;
+        this.tokenService = tokenService;
         this.rpName = "test-rp";
-        this.assertionConsumerServiceIndex = Optional.empty();
     }
 
     @Override
     public Session provide() {
-
         Optional<AccessToken> accessToken = Optional.empty();
         final ContainerRequestContext containerRequest = context.getResource(ContainerRequestContext.class);
         Map<String, Cookie> cookieNameValueMap = containerRequest.getCookies();
@@ -71,11 +65,7 @@ public class SessionFactory extends AbstractContainerRequestValueFactory<Session
             accessToken = Optional.of(new AccessToken(cookieNameValueMap.get(ACCESS_TOKEN_COOKIE_NAME).getValue()));
         }
 
-        try {
-            tokenValidator.validate(accessToken);
-        } catch (InvalidAccessTokenException e) {
-            throw new WebApplicationException(InvalidAccessTokenExceptionMapper.getRestrictedPrivateBetaResponse(e, configuration));
-        }
+        tokenService.validate(accessToken);
 
         Optional<String> overriddenRpName = getQueryParam(RP_NAME_PARAM);
         Optional<JourneyHint> journeyHint = Optional.empty();
@@ -146,7 +136,7 @@ public class SessionFactory extends AbstractContainerRequestValueFactory<Session
 
         Response response = authnRequestManager.sendAuthnRequest(
                 containerRequest.getUriInfo().getRequestUri(),
-                assertionConsumerServiceIndex,
+                Optional.empty(),
                 overriddenRpName.orElse(rpName),
                 accessToken,
                 journeyHint,
