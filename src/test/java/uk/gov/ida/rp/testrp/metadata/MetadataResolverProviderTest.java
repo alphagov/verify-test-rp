@@ -6,6 +6,7 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import org.apache.commons.io.FileUtils;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,9 +43,14 @@ public class MetadataResolverProviderTest {
     }
 
     @Mock
-    TestRpConfiguration configuration;
+    private TestRpConfiguration configuration;
 
     private static Client client = ClientBuilder.newBuilder().hostnameVerifier(new NoopHostnameVerifier()).trustStore(createKeyStore()).build();
+
+    @Before
+    public void setUp() {
+        System.setProperty("https.protocols", "TLSv1.2");
+    }
 
     @Test
     public void shouldPerformHttpsRequestWhenInsecureMetadataFlagIsNotPresent() throws Exception {
