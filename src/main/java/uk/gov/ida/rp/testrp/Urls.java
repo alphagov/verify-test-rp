@@ -8,6 +8,11 @@ public interface Urls {
     String SUCCESSFUL_IDP_PATH = "/success-idp" ;
     String GENERATE_TOKEN_PATH = "/generate-token";
 
+    interface PrivateUrls {
+        String PRIVATE_ROOT = "/private";
+        String GENERATE_TOKEN_RESOURCE = PRIVATE_ROOT + Urls.GENERATE_TOKEN_PATH;
+    }
+
     interface TestRpUrls {
         String TEST_RP_ROOT = "/test-rp";
         String LOGIN_RESOURCE = TEST_RP_ROOT + Urls.LOGIN_PATH;

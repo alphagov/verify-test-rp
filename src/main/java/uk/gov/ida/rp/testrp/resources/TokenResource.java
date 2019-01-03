@@ -11,7 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path(Urls.GENERATE_TOKEN_PATH)
+@Path(Urls.PrivateUrls.GENERATE_TOKEN_RESOURCE)
 @Produces(MediaType.APPLICATION_JSON)
 public class TokenResource {
 

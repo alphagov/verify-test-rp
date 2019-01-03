@@ -46,7 +46,7 @@ public class TokenResourceAppRuleTests extends IntegrationTestHelper {
 
     @Test
     public void shouldGenerateToken() throws Exception {
-        URI uri = testRp.uri(Urls.GENERATE_TOKEN_PATH);
+        URI uri = testRp.uri(Urls.PrivateUrls.GENERATE_TOKEN_RESOURCE);
         DateTime validUntil = DateTime.now().plusDays(5);
         Response response = client
                 .target(uri)
