@@ -1,21 +1,17 @@
 package uk.gov.ida.rp.testrp.resources;
 
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
-import org.glassfish.jersey.server.ContainerRequest;
-import org.glassfish.jersey.server.ExtendedUriInfo;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.ida.rp.testrp.controllogic.AuthnRequestSenderHandler;
 import uk.gov.ida.saml.core.domain.TransactionIdaStatus;
 import uk.gov.ida.saml.idp.stub.domain.InboundResponseFromHub;
 
 import javax.ws.rs.core.Response;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,23 +29,14 @@ public class HeadlessRpResourceTest {
 
     @Mock
     private AuthnRequestSenderHandler authnRequestSenderHandler;
-
-    @Mock
-    private ContainerRequest containerRequest;
-
-    @Mock
-    private ExtendedUriInfo contextUriInfo;
-
     @Mock
     private Function<String, InboundResponseFromHub> samlResponseDeserialiser;
     @Mock
     private InboundResponseFromHub inboundResponseFromHub;
 
     @Before
-    public void setUp() throws URISyntaxException {
+    public void setUp() {
         this.resource = new HeadlessRpResource(samlResponseDeserialiser, authnRequestSenderHandler);
-        when(contextUriInfo.getRequestUri()).thenReturn(new URI("http://some-request-uri.gov.uk"));
-        when(containerRequest.getUriInfo()).thenReturn(contextUriInfo);
     }
 
     @Test

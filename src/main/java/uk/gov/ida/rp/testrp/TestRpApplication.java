@@ -1,6 +1,6 @@
 package uk.gov.ida.rp.testrp;
 
-import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
+import com.fasterxml.jackson.databind.util.StdDateFormat;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableMap;
 import com.hubspot.dropwizard.guicier.DropwizardModule;
@@ -105,7 +105,7 @@ public class TestRpApplication extends Application<TestRpConfiguration> {
 
         environment.jersey().register(TestRpAuthProvider.createBinder());
 
-        environment.getObjectMapper().setDateFormat(new ISO8601DateFormat());
+        environment.getObjectMapper().setDateFormat(new StdDateFormat());
 
         //resources
         environment.jersey().register(HeadlessRpResource.class);

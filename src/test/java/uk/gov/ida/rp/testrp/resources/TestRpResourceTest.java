@@ -5,9 +5,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.ida.common.SessionId;
 import uk.gov.ida.rp.testrp.builders.AccessTokenBuilder;
 import uk.gov.ida.rp.testrp.contract.LevelOfAssuranceDto;
@@ -48,7 +48,7 @@ public class TestRpResourceTest {
     @Before
     public void setErrorMessageGeneratorDummyErrorMessage() {
         PageErrorMessageDetails nullErrorMessage = new PageErrorMessageDetails(Optional.empty(), Optional.empty());
-        when(pageErrorMessageDetailsFactory.getErrorMessage(Matchers.<Optional<TransactionIdaStatus>>any())).thenReturn(nullErrorMessage);
+        when(pageErrorMessageDetailsFactory.getErrorMessage(ArgumentMatchers.<Optional<TransactionIdaStatus>>any())).thenReturn(nullErrorMessage);
 
         resource = new TestRpResource(sessionRepository, aTestRpConfiguration().build(), pageErrorMessageDetailsFactory, tokenValidator);
     }
