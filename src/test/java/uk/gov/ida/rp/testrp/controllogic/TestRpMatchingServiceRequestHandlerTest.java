@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.ida.common.SessionId;
 import uk.gov.ida.rp.testrp.contract.Cycle3DatasetDto;
 import uk.gov.ida.rp.testrp.contract.LevelOfAssuranceDto;
@@ -26,8 +26,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -96,7 +96,6 @@ public class TestRpMatchingServiceRequestHandlerTest {
                 .build();
 
         final Optional<Session> session = Optional.ofNullable(newSession(false, false));
-        when(sessionRepository.getSession(session.get().getSessionId())).thenReturn(session);
         when(sessionRepository.getSessionForRequestId(any())).thenReturn(session);
 
         matchingServiceRequestHandler.handleMatchingRequest(matchingServiceRequestDto);
@@ -132,7 +131,6 @@ public class TestRpMatchingServiceRequestHandlerTest {
                 .build();
 
         final Optional<Session> session = Optional.ofNullable(newSession(false, false));
-        when(sessionRepository.getSession(session.get().getSessionId())).thenReturn(session);
         when(sessionRepository.getSessionForRequestId(any())).thenReturn(session);
 
         matchingServiceRequestHandler.handleMatchingRequest(matchingServiceRequestDto);

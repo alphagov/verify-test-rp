@@ -7,7 +7,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.ida.common.SessionId;
 import uk.gov.ida.rp.testrp.TestRpConfiguration;
 import uk.gov.ida.rp.testrp.controllogic.AuthnRequestSenderHandler;
@@ -28,11 +28,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import static java.util.Collections.nCopies;
 import static java.util.Collections.singletonList;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.ida.rp.testrp.Urls.Cookies.TEST_RP_SESSION_COOKIE_NAME;
@@ -73,7 +74,7 @@ public class TestRpSessionFactoryTest {
             "requestId",
             URI.create("pathUserWasTryingToAccess"),
             "issuerId",
-            Optional.ofNullable(1),
+            Optional.of(1),
             Optional.empty(),
             false,
             false,
@@ -86,6 +87,7 @@ public class TestRpSessionFactoryTest {
 
         when(resourceContext.getResource(ContainerRequestContext.class)).thenReturn(containerRequestContext);
         when(containerRequestContext.getUriInfo()).thenReturn(uriInfo);
+        when(containerRequestContext.getUriInfo().getRequestUri()).thenReturn(new URI("http://uri"));
         when(uriInfo.getQueryParameters()).thenReturn(new MultivaluedHashMap<>());
 
         when(authenticator.authenticate(any())).thenReturn(Optional.of(expectedSession));
