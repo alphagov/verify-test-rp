@@ -8,12 +8,19 @@ A stub relying party used when testing the GOV.UK Verify hub.
 
 ## Tokens
 
-Test RP can use JWT to control access if the `privateBetaUserAccessRestrictionEnabled` flag is set to true. The following request can be used to generate these certificates.
+Test RP can use JWT to control access if the `privateBetaUserAccessRestrictionEnabled` flag is set to true. The following request can be used to generate a token value.
 
 ```HTTP
-POST /generate-token HTTP/1.1
+POST /private/generate-token HTTP/1.1
 Content-Type: application/json; charset=utf-8
+{
+    "validUntil":"2019-01-03T10:00:54.118Z",
+    "issueTo":"http://stub_idp.acme.org/stub-idp-one/SSO/POST"
+}
+```
 
+The following response contains a token value.
+```
 {
   "tokenValue": "eyJhbGciOiJSUzI1NiJ9..."
 }
