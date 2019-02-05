@@ -78,7 +78,7 @@ public class TestRpApplication extends Application<TestRpConfiguration> {
             @Override
             public Map<String, Map<String, String>> getViewConfiguration(TestRpConfiguration config) {
                 // beware: this is to force enable escaping of unsanitised user input
-                return ImmutableMap.of(new FreemarkerViewRenderer().getSuffix(),
+                return ImmutableMap.of(new FreemarkerViewRenderer().getConfigurationKey(),
                         ImmutableMap.of(
                                 "output_format", "HTMLOutputFormat"
                         ));
