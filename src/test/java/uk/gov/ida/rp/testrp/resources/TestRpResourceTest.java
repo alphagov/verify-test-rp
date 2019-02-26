@@ -16,7 +16,7 @@ import uk.gov.ida.rp.testrp.domain.PageErrorMessageDetails;
 import uk.gov.ida.rp.testrp.domain.PageErrorMessageDetailsFactory;
 import uk.gov.ida.rp.testrp.repositories.Session;
 import uk.gov.ida.rp.testrp.repositories.SessionRepository;
-import uk.gov.ida.rp.testrp.tokenservice.AccessTokenValidator;
+import uk.gov.ida.rp.testrp.tokenservice.TokenService;
 import uk.gov.ida.rp.testrp.views.TestRpSuccessPageView;
 import uk.gov.ida.saml.core.domain.TransactionIdaStatus;
 
@@ -41,7 +41,7 @@ public class TestRpResourceTest {
     @Mock
     private PageErrorMessageDetailsFactory pageErrorMessageDetailsFactory;
     @Mock
-    private AccessTokenValidator tokenValidator;
+    private TokenService tokenService;
 
     private TestRpResource resource;
 
@@ -50,7 +50,7 @@ public class TestRpResourceTest {
         PageErrorMessageDetails nullErrorMessage = new PageErrorMessageDetails(Optional.empty(), Optional.empty());
         when(pageErrorMessageDetailsFactory.getErrorMessage(ArgumentMatchers.<Optional<TransactionIdaStatus>>any())).thenReturn(nullErrorMessage);
 
-        resource = new TestRpResource(sessionRepository, aTestRpConfiguration().build(), pageErrorMessageDetailsFactory, tokenValidator);
+        resource = new TestRpResource(sessionRepository, aTestRpConfiguration().build(), pageErrorMessageDetailsFactory, tokenService);
     }
 
     @Test
@@ -59,7 +59,7 @@ public class TestRpResourceTest {
         AccessToken cookieToken = AccessTokenBuilder.anAccessToken().withValue("cookie-token").build();
         resource.getMain(Optional.empty(), Optional.of(queryParamToken), cookieToken);
 
-        verify(tokenValidator).validate(Optional.of(queryParamToken));
+        verify(tokenService).validate(Optional.of(queryParamToken));
     }
 
     @Test
@@ -67,14 +67,7 @@ public class TestRpResourceTest {
         AccessToken cookieToken = AccessTokenBuilder.anAccessToken().withValue("cookie-token").build();
         resource.getMain(Optional.empty(), Optional.empty(), cookieToken);
 
-        verify(tokenValidator).validate(Optional.of(cookieToken));
-    }
-
-    @Test
-    public void getMain_withNoQueryParamOrCookie_shouldValidateAbsentToken() {
-        resource.getMain(Optional.empty(), Optional.empty(), null);
-
-        verify(tokenValidator).validate(Optional.<AccessToken>empty());
+        verify(tokenService).validate(Optional.of(cookieToken));
     }
 
     @Test

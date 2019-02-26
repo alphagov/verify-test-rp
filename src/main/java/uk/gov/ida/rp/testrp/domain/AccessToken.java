@@ -1,6 +1,9 @@
 package uk.gov.ida.rp.testrp.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class AccessToken {
+    @JsonProperty
     private final String tokenValue;
 
     public AccessToken(final String tokenValue) {

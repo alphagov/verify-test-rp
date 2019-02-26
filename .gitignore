@@ -28,3 +28,5 @@ docker/run/*.crt
 docker/run/*.ks
 docker/run/*.pk8
 local.env
+sample_rp_signing_primary.*
+sample_rp_signing_secondary.*

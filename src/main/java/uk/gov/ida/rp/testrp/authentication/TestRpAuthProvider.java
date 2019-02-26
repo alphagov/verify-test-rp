@@ -14,7 +14,7 @@ import org.glassfish.jersey.server.spi.internal.ValueFactoryProvider;
 import uk.gov.ida.rp.testrp.TestRpConfiguration;
 import uk.gov.ida.rp.testrp.controllogic.AuthnRequestSenderHandler;
 import uk.gov.ida.rp.testrp.repositories.Session;
-import uk.gov.ida.rp.testrp.tokenservice.AccessTokenValidator;
+import uk.gov.ida.rp.testrp.tokenservice.TokenService;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -25,8 +25,8 @@ public class TestRpAuthProvider extends AbstractValueFactoryProvider {
     private final SimpleAuthenticator authenticator;
     private final TestRpConfiguration testRpConfiguration;
     private final AuthnRequestSenderHandler authnRequestManager;
-    private final AccessTokenValidator tokenValidator;
-    
+    private final TokenService tokenService;
+
     @Inject
     private TestRpAuthProvider(
             MultivaluedParameterExtractorProvider mpep,
@@ -34,13 +34,12 @@ public class TestRpAuthProvider extends AbstractValueFactoryProvider {
             SimpleAuthenticator authenticator,
             TestRpConfiguration testRpConfiguration,
             AuthnRequestSenderHandler authnRequestManager,
-            AccessTokenValidator tokenValidator
-    ) {
+            TokenService tokenService) {
         super(mpep, locator, Parameter.Source.UNKNOWN);
         this.authenticator = authenticator;
         this.testRpConfiguration = testRpConfiguration;
         this.authnRequestManager = authnRequestManager;
-        this.tokenValidator = tokenValidator;
+        this.tokenService = tokenService;
     }
 
     @Singleton
@@ -65,7 +64,7 @@ public class TestRpAuthProvider extends AbstractValueFactoryProvider {
     @Override
     protected AbstractContainerRequestValueFactory<?> createValueFactory(Parameter parameter) {
         if (Session.class.equals(parameter.getRawType())) {
-            return new SessionFactory(authenticator, testRpConfiguration, authnRequestManager, tokenValidator);
+            return new SessionFactory(authenticator, testRpConfiguration, authnRequestManager, tokenService);
         }
         return null;
     }

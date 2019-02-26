@@ -39,9 +39,7 @@ public class TestRpConfigurationBuilder {
                 "/javascript",
                 "/stylesheets",
                 "/images",
-                privateBetaUserAccessRestrictionEnabled,
-                "token-service-user",
-                "token-service-password"
+                privateBetaUserAccessRestrictionEnabled
         );
     }
 
@@ -63,13 +61,8 @@ public class TestRpConfigurationBuilder {
                 String javascriptPath,
                 String stylesheetsPath,
                 String imagesPath,
-                Boolean privateBetaUserAccessRestrictionEnabled,
-                String tokenServiceUser,
-                String tokenServicePassword
+                Boolean privateBetaUserAccessRestrictionEnabled
         ) {
-
-            this.tokenServiceUser = tokenServiceUser;
-            this.tokenServicePassword = tokenServicePassword;
 
             this.httpClient = httpClient;
             this.serviceInfo = serviceInfo;
