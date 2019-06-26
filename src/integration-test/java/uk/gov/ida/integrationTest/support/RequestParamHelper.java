@@ -1,6 +1,6 @@
 package uk.gov.ida.integrationTest.support;
 
-import org.apache.ws.commons.util.Base64;
+import org.apache.commons.codec.binary.Base64;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -52,7 +52,7 @@ public class RequestParamHelper {
 
     private static String extractRequestId(String value) {
         try {
-            final Document request = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new ByteArrayInputStream(Base64.decode(value)));
+            final Document request = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new ByteArrayInputStream(Base64.decodeBase64(value)));
             return request.getElementsByTagName("saml2p:AuthnRequest").item(0).getAttributes().getNamedItem("ID").getNodeValue();
         } catch (SAXException | ParserConfigurationException | IOException e) {
             return null;

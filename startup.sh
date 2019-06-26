@@ -18,5 +18,5 @@ if test ! "$1" == "skip-build"; then
 fi
 
 mkdir -p logs
-start_service test-rp . configuration/local/test-rp.yml $TEST_RP_PORT
+start_service verify-test-rp . configuration/local/test-rp.yml $TEST_RP_PORT
 wait

@@ -33,6 +33,7 @@ import static uk.gov.ida.saml.core.test.TestEntityIds.STUB_IDP_ONE;
 public class TokenServiceTest {
 
     private TokenService tokenService;
+    private BadTokenService badTokenService;
 
     @Mock
     private TestRpConfiguration configuration;
@@ -53,11 +54,12 @@ public class TokenServiceTest {
         when(configuration.getTokenEpoch()).thenReturn(1);
         when(configuration.isPrivateBetaUserAccessRestrictionEnabled()).thenReturn(true);
         tokenService = new TokenService(configuration);
+        badTokenService = new BadTokenService(configuration);
     }
 
     @Test
     public void shouldValidateWhenSignedProperlyAndInDateAndEpoch() {
-        AccessToken accessToken = new AccessToken("eyJhbGciOiJSUzI1NiJ9.eyJlcG9jaCI6MSwidmFsaWRVbnRpbCI6NDEwMjQ0NDgwMDAwMCwiaXNzdWVkVG8iOiJodHRwOi8vc3R1Yl9pZHAuYWNtZS5vcmcvc3R1Yi1pZHAtb25lL1NTTy9QT1NUIn0.FKbhvdTRN8ZWtwEPEXtbF4YPf-_bDMK8U5nVJaeRK1ZCOQwCKR3UPP4uWXZ0CDYQSI5HTJrmz1dypSk7UhAU5dPPMexKjbif6QSUxpJbl24N0odiOlDzMTPXJD_bXwyJBxc4rccIhjDRYJ8qVRDAiE0jFksRXzRhjfb3HdYR5E3-hNlS1ZSnKXWBa4jFxgrWwJ6vPlDrlPjLs8Y1ByK8vOAYyKjOUKyjF0PqljiZlRgt5QHPZOX3yaO2EEPoLkwNejUi_WWM6O0OxVdpHjXcIL_F07K5UYDtyJDAMM2Z54xNHbk4qfATnDUWK2uXmHlb27X9KhLoToMSyqIFUDoMCQ");
+        AccessToken accessToken = new AccessToken("eyJhbGciOiJSUzI1NiJ9.eyJlcG9jaCI6MSwidmFsaWRVbnRpbCI6NDEwMjQ0NDgwMDAwMCwiaXNzdWVkVG8iOiJodHRwOi8vc3R1Yl9pZHAuYWNtZS5vcmcvc3R1Yi1pZHAtb25lL1NTTy9QT1NUIn0.Ad7qOHJ-ZJe3feUB9-Rq9nNsGal5wSqgmHWVNZpnASKdMfUZYHCBoz_TAZHZL9WeG9HkC_8INRw3o10Q8wBZyC662X0-Fif149p6eP5vld54nfIKJ1fRFxo7yTDaIw3sKyaXDIQ6IGGXyEsgg7kMwNyID1eTp9X5jV0EOIoEilyo-Lr5qhBAR7ZBEj5L7tM15b34UalUjaqz3_5i8ErSvumEAiU1DQWA66-uMP5bGn3dpwiSaP_8egU2IXXOkU78fGgUmckqkWFbRbgv4KA0nioYX7BS1GFh0QSzLiXjLXO33YYEapx8tNh3UetgZ1jmUBAqQFUireg3t8Onx_DKfQ");
 
         tokenService.validate(Optional.of(accessToken));
     }
@@ -103,14 +105,14 @@ public class TokenServiceTest {
 
     @Test(expected = CouldNotParseTokenPayloadException.class)
     public void shouldNotValidateWhenTokenPayloadDoesNotHaveRequiredEntries() {
-        AccessToken accessToken = new AccessToken("eyJhbGciOiJSUzI1NiJ9.eyJlcG9jaCI6MSwiaXNzdWVkVG8iOiJodHRwOi8vc3R1Yl9pZHAuYWNtZS5vcmcvc3R1Yi1pZHAtb25lL1NTTy9QT1NUIn0.iEygFt_bExigpX_QJNkaeSbKa6ua3JxPVFPxCW2aHlPIsjUob_K0upK7zdDeunuU0KY16mcmgxzAbCNIGPHOSP0uY_Kmvfn2oVQiPaDJgtqVdJuxXoYEKhb_tEmVcZcTwyvx3HE2emyBFslwgP0qPHCsadOmSmqczw4QrV6TDsLn8ysZyYmovGUlOs4g6lhMHAijzj045_OY3rEoXu8LTaMZVa2i9M0LB3b7Rmfs_Gg5bvoSEW2BiinyfpMlSWPd_Mi38NE3yFx4sLrPIXuF5Drx0QfLWikA4uk8zpIfMsUijRtV5SuufisV5s1jk6-1tsTCsheoq8hjTkjP4w_8Mw");
+        AccessToken accessToken = badTokenService.generate(STUB_IDP_ONE);
 
         tokenService.validate(Optional.of(accessToken));
     }
 
     @Test
     public void shouldGenerateAValidToken() {
-        AccessToken expectedAccessToken = new AccessToken("eyJhbGciOiJSUzI1NiJ9.eyJlcG9jaCI6MSwidmFsaWRVbnRpbCI6NDEwMjQ0NDgwMDAwMCwiaXNzdWVkVG8iOiJodHRwOi8vc3R1Yl9pZHAuYWNtZS5vcmcvc3R1Yi1pZHAtb25lL1NTTy9QT1NUIn0.FKbhvdTRN8ZWtwEPEXtbF4YPf-_bDMK8U5nVJaeRK1ZCOQwCKR3UPP4uWXZ0CDYQSI5HTJrmz1dypSk7UhAU5dPPMexKjbif6QSUxpJbl24N0odiOlDzMTPXJD_bXwyJBxc4rccIhjDRYJ8qVRDAiE0jFksRXzRhjfb3HdYR5E3-hNlS1ZSnKXWBa4jFxgrWwJ6vPlDrlPjLs8Y1ByK8vOAYyKjOUKyjF0PqljiZlRgt5QHPZOX3yaO2EEPoLkwNejUi_WWM6O0OxVdpHjXcIL_F07K5UYDtyJDAMM2Z54xNHbk4qfATnDUWK2uXmHlb27X9KhLoToMSyqIFUDoMCQ");
+        AccessToken expectedAccessToken = new AccessToken("eyJhbGciOiJSUzI1NiJ9.eyJlcG9jaCI6MSwidmFsaWRVbnRpbCI6NDEwMjQ0NDgwMDAwMCwiaXNzdWVkVG8iOiJodHRwOi8vc3R1Yl9pZHAuYWNtZS5vcmcvc3R1Yi1pZHAtb25lL1NTTy9QT1NUIn0.Ad7qOHJ-ZJe3feUB9-Rq9nNsGal5wSqgmHWVNZpnASKdMfUZYHCBoz_TAZHZL9WeG9HkC_8INRw3o10Q8wBZyC662X0-Fif149p6eP5vld54nfIKJ1fRFxo7yTDaIw3sKyaXDIQ6IGGXyEsgg7kMwNyID1eTp9X5jV0EOIoEilyo-Lr5qhBAR7ZBEj5L7tM15b34UalUjaqz3_5i8ErSvumEAiU1DQWA66-uMP5bGn3dpwiSaP_8egU2IXXOkU78fGgUmckqkWFbRbgv4KA0nioYX7BS1GFh0QSzLiXjLXO33YYEapx8tNh3UetgZ1jmUBAqQFUireg3t8Onx_DKfQ");
         GenerateTokenRequestDto tokenDto = new GenerateTokenRequestDto(DateTime.parse("2100-01-01"), STUB_IDP_ONE);
 
         AccessToken accessToken = tokenService.generate(tokenDto);
