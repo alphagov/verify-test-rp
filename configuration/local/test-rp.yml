@@ -87,7 +87,7 @@ javascriptPath: /assets/javascripts
 stylesheetsPath: /assets/stylesheets
 imagesPath: /assets/images
 
-privateBetaUserAccessRestrictionEnabled: ${TEST_RP_PRIVATE_BETA_USER_ACCESS_RESTRICTION_ENABLED}
+privateBetaUserAccessRestrictionEnabled: ${TEST_RP_PRIVATE_BETA_USER_ACCESS_RESTRICTION_ENABLED:-false}
 
 tokenServiceUrl: ${TEST_RP_TOKEN_SERVICE_URL}
 tokenServiceUser: ${TEST_RP_TOKEN_SERVICE_USER}
