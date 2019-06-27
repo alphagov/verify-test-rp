@@ -1,11 +1,12 @@
 ---
 applications:
-  - name: $ENV-test-rp-service
+  - name: $ENV-test-rp
     routes:
       - route: $ENV-test-rp.apps.internal
     memory: 1G
     buildpack: java_buildpack
     env:
+      JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 11.+ } }'
       CONFIG_FILE: /app/test-rp/test-rp.yml
       LOG_PATH: /app/test-rp/logs
       LOG_LEVEL: INFO
@@ -13,7 +14,7 @@ applications:
       TEST_RP_MSA_METADATA_URL: http://$ENV-test-rp-msa.apps.internal:8080/matching-service/SAML2/metadata
       METADATA_ENTITY_ID: $METADATA_ENTITY_ID
       TRUSTSTORE_PATH: /app/test-rp/truststores/$TRUSTSTORE_NAME
-      TRUSTSTORE_PASSWORD: puppet
+      TRUSTSTORE_PASSWORD: $TRUSTSTORE_PASSWORD
       PRIVATE_BETA_USER_ACCESS_RESTRICTION_ENABLED: $PRIVATE_BETA
       SHOULD_SHOW_START_WITH_EIDAS_BUTTON: true
       ENCRYPTION_KEY: $ENCRYPTION_KEY
