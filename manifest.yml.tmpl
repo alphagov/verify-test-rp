@@ -1,8 +1,10 @@
 ---
 applications:
-  - name: $ENV-test-rp
+  - name: test-rp-$ENV
     routes:
-      - route: $ENV-test-rp.apps.internal
+      - route: test-rp-$ENV.apps.internal
+      - route: test-rp-$ENV.cloudapps.digital
+      - route: test-rp-$ENV.cloudapps.digital/private
     memory: 1G
     buildpack: java_buildpack
     env:
@@ -10,8 +12,8 @@ applications:
       CONFIG_FILE: /app/test-rp/test-rp.yml
       LOG_PATH: /app/test-rp/logs
       LOG_LEVEL: INFO
-      TEST_RP_URL: https://$ENV-test-rp.cloudapps.digital
-      TEST_RP_MSA_METADATA_URL: http://$ENV-test-rp-msa.apps.internal:8080/matching-service/SAML2/metadata
+      TEST_RP_URL: https://test-rp-$ENV.cloudapps.digital
+      TEST_RP_MSA_METADATA_URL: http://test-rp-msa-$ENV.apps.internal:8080/matching-service/SAML2/metadata
       METADATA_ENTITY_ID: $METADATA_ENTITY_ID
       TRUSTSTORE_PATH: /app/test-rp/truststores/$TRUSTSTORE_NAME
       TRUSTSTORE_PASSWORD: $TRUSTSTORE_PASSWORD
