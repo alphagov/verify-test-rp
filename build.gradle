@@ -122,7 +122,7 @@ dependencies {
             'org.opensaml:opensaml-saml-impl:' + dependencyVersions.opensaml_version,
             'uk.gov.ida:saml-lib:' + dependencyVersions.saml_libs_version,
             'uk.gov.ida:hub-saml:3.4.2-15754',
-            'uk.gov.ida:hub-saml-test-utils:3.4.2-15756'
+            'uk.gov.ida:hub-saml-test-utils:3.4.2-15757'
 
     saml_test 'uk.gov.ida:saml-test:' + dependencyVersions.saml_libs_version
 
