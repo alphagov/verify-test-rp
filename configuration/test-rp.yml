@@ -74,8 +74,4 @@ imagesPath: /assets/images
 
 privateBetaUserAccessRestrictionEnabled: ${PRIVATE_BETA_USER_ACCESS_RESTRICTION_ENABLED}
 
-tokenServiceUrl: ${TOKEN_SERVICE_URL}
-tokenServiceUser: ${TOKEN_SERVICE_USER}
-tokenServicePassword: ${TOKEN_SERVICE_PASSWORD}
-
 shouldShowStartWithEidasButton: ${SHOULD_SHOW_START_WITH_EIDAS_BUTTON}
