@@ -2,7 +2,7 @@
 
 set -e
 
-./gradlew --daemon --parallel clean build intTest installDist copyToLib 2>&1
+./gradlew --daemon --parallel clean build intTest installDist 2>&1
 
 ./startup.sh skip-build
 

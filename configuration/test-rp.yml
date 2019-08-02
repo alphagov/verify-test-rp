@@ -1,7 +1,7 @@
 server:
   applicationConnectors:
     - type: http
-      port: 50130
+      port: ${PORT:-50130}
   adminConnectors:
     - type: http
       port: 50131
@@ -9,26 +9,16 @@ server:
   requestLog:
     type: classic
     appenders:
-      - type: file
-        currentLogFilename: ${LOG_PATH}/debug/test-rp_access.log
-        archivedLogFilenamePattern: ${LOG_PATH}/debug/test-rp_access.log.%d.gz
-        archivedFileCount: 7
-      - type: logstash-file
-        currentLogFilename: ${LOG_PATH}/test-rp_access.log
-        archivedLogFilenamePattern: ${LOG_PATH}/test-rp_access.log.%d.gz
-        archivedFileCount: 7
-      - type: logstash-syslog
-        facility: local2
-        tag: test-rp
+      - type: console
 
-transactionHost: https://${TEST_RP_HOST}:443
+transactionHost: ${TEST_RP_URL}
 dontCacheFreemarkerTemplates: false
 
 cookieName: test-rp-session
 
 saml:
   entityId: http://www.%s.gov.uk/SAML2/MD
-  expectedDestination: https://${TEST_RP_HOST}
+  expectedDestination: ${TEST_RP_URL}
 
 httpClient:
   timeout: 60s
@@ -41,7 +31,7 @@ httpClient:
 
 allowInsecureMetadataLocation: true
 
-msaMetadataUri: http://localhost:50210/matching-service/SAML2/metadata
+msaMetadataUri: ${TEST_RP_MSA_METADATA_URL}
 
 msaEntityId: http://www.test-rp-ms.gov.uk/SAML2/MD
 hubEntityId: ${METADATA_ENTITY_ID}
@@ -52,48 +42,36 @@ serviceInfo:
   name: test-rp
 
 privateEncryptionKeyConfiguration:
-  keyFile: ${TEST_RP_PRIVATE_ENCRYPTION_KEY}
+  type: encoded
+  key: ${ENCRYPTION_KEY}
 
 publicEncryptionCert:
-   certFile: ${TEST_RP_PUBLIC_ENCRYPTION_KEY}
-   name: unusedButCurrentlyRequired
+  type: encoded
+  cert: ${ENCRYPTION_CERT}
+  name: unusedButCurrentlyRequired
 
 privateSigningKeyConfiguration:
-  keyFile: ${TEST_RP_PRIVATE_SIGNING_KEY}
+  type: encoded
+  key: ${SIGNING_KEY}
 
 publicSigningCert:
-   certFile: ${TEST_RP_PUBLIC_SIGNING_KEY}
-   name: unusedButCurrentlyRequired
+  type: encoded
+  cert: ${SIGNING_CERT}
+  name: unusedButCurrentlyRequired
 
 clientTrustStoreConfiguration:
-  storeUri: ${TRUSTSTORE_PATH}/ida_truststore.ts
-  path: ${TRUSTSTORE_PATH}/ida_truststore.ts
+  path: ${TRUSTSTORE_PATH}
   password: ${TRUSTSTORE_PASSWORD}
 
 logging:
   level: INFO
   appenders:
-    - type: file
-      currentLogFilename: ${LOG_PATH}/debug/test-rp.log
-      archivedLogFilenamePattern: ${LOG_PATH}/debug/test-rp.log.%d.gz
-      archivedFileCount: 7
-      logFormat: '%-5p [%d{ISO8601,UTC}] %c: %X{logPrefix}%m%n%xEx'
-    - type: logstash-file
-      currentLogFilename: ${LOG_PATH}/test-rp.log
-      archivedLogFilenamePattern: ${LOG_PATH}/test-rp.log.%d.gz
-      archivedFileCount: 7
-    - type: logstash-syslog
-      facility: local2
-      tag: test-rp
+    - type: console
 
 javascriptPath: /assets/javascripts
 stylesheetsPath: /assets/stylesheets
 imagesPath: /assets/images
 
-privateBetaUserAccessRestrictionEnabled: ${TEST_RP_PRIVATE_BETA_USER_ACCESS_RESTRICTION_ENABLED}
+privateBetaUserAccessRestrictionEnabled: ${PRIVATE_BETA_USER_ACCESS_RESTRICTION_ENABLED}
 
-tokenServiceUrl: ${TEST_RP_TOKEN_SERVICE_URL}
-tokenServiceUser: ${TEST_RP_TOKEN_SERVICE_USER}
-tokenServicePassword: ${TEST_RP_TOKEN_SERVICE_PASSWORD}
-
-shouldShowStartWithEidasButton: ${TEST_RP_SHOULD_SHOW_START_WITH_EIDAS_BUTTON}
+shouldShowStartWithEidasButton: ${SHOULD_SHOW_START_WITH_EIDAS_BUTTON}

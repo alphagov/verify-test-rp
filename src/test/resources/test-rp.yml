@@ -67,10 +67,6 @@ imagesPath: /assets/images
 
 privateBetaUserAccessRestrictionEnabled: false
 
-tokenServiceUrl: http://localhost:53100
-tokenServiceUser: a_very_real_user
-tokenServicePassword: a_not_very_real_password
-
 assets:
   overrides:
     /assets: test-rp/build/resources/main/assets

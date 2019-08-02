@@ -48,7 +48,17 @@ public class TestRpApplication extends Application<TestRpConfiguration> {
         JerseyGuiceUtils.reset();
 
         try {
-            new TestRpApplication().run(args);
+            if (args == null || args.length == 0) {
+                String configFile = System.getenv("CONFIG_FILE");
+
+                if (configFile == null) {
+                    throw new RuntimeException("CONFIG_FILE environment variable should be set with path to configuration file");
+                }
+
+                new TestRpApplication().run("server", configFile);
+            } else {
+                new TestRpApplication().run(args);
+            }
         } catch (Exception e) {
             throw Throwables.propagate(e);
         }
