@@ -26,6 +26,7 @@
         background-color: #00692f;
       }
     </style>
+    <script type="text/javascript" src="/assets/scripts/ga.js"></script>
 </head>
 <body>
 <form class='verify-saml-form' action="${targetUri}" method="POST">
