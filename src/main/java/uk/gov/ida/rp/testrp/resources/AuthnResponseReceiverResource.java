@@ -1,5 +1,6 @@
 package uk.gov.ida.rp.testrp.resources;
 
+import org.apache.http.client.utils.URIBuilder;
 import uk.gov.ida.common.SessionId;
 import uk.gov.ida.rp.testrp.TestRpConfiguration;
 import uk.gov.ida.rp.testrp.Urls;
@@ -60,7 +61,7 @@ public class AuthnResponseReceiverResource {
             case NoAuthenticationContext:
             case AuthenticationFailed:
             case RequesterError:
-                return errorResponse(responseFromHub.getTransactionIdaStatus());
+                return errorResponse(responseFromHub.getTransactionIdaStatus(), gaClientId);
             default:
                 throw new IllegalStateException(format("Unexpected status in hub response. {0}", responseFromHub));
         }
@@ -93,10 +94,11 @@ public class AuthnResponseReceiverResource {
         }
     }
 
-    private Response errorResponse(TransactionIdaStatus transactionIdaStatus) {
-        URI location = fromResource(TestRpResource.class)
-                .queryParam(Urls.Params.ERROR_CODE_PARAM, transactionIdaStatus)
-                .build();
+    private Response errorResponse(TransactionIdaStatus transactionIdaStatus, String gaClientId) {
+        UriBuilder builder = fromResource(TestRpResource.class)
+                .queryParam(Urls.Params.ERROR_CODE_PARAM, transactionIdaStatus);
+        if ( gaClientId != null && !gaClientId.isEmpty() ) builder.queryParam(Urls.Params.GA_CLIENT_ID, gaClientId);
+        URI location = builder.build();
         return Response.seeOther(location).build();
     }
 
