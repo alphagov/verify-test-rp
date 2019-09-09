@@ -15,6 +15,7 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
@@ -47,13 +48,14 @@ public class AuthnResponseReceiverResource {
     @POST
     public Response doLogin(
             @FormParam(Urls.Params.SAML_RESPONSE_PARAM) @NotNull String samlResponse,
-            @FormParam(Urls.Params.RELAY_STATE_PARAM) SessionId relayState) {
+            @FormParam(Urls.Params.RELAY_STATE_PARAM) SessionId relayState,
+            @QueryParam(Urls.Params.GA_CLIENT_ID) String gaClientId) {
 
         ResponseFromHub responseFromHub = authnResponseReceiverHandler.handleResponse(samlResponse, Optional.ofNullable(relayState));
 
         switch (responseFromHub.getTransactionIdaStatus()){
             case Success:
-                return handleSuccess(responseFromHub);
+                return handleSuccess(responseFromHub, gaClientId);
             case NoMatchingServiceMatchFromHub:
             case NoAuthenticationContext:
             case AuthenticationFailed:
@@ -64,7 +66,7 @@ public class AuthnResponseReceiverResource {
         }
     }
 
-    private Response handleSuccess(ResponseFromHub responseFromHub) {
+    private Response handleSuccess(ResponseFromHub responseFromHub, String gaClientId) {
         if(responseFromHub.getAttributes().isEmpty()) {
             UriBuilder location = UriBuilder.fromPath(TEST_RP_ROOT);
             if (responseFromHub.getRedirectUri().isPresent()) {
@@ -72,6 +74,9 @@ public class AuthnResponseReceiverResource {
             }
             if (responseFromHub.getAuthnContext().isPresent()) {
                 location.queryParam(Urls.Params.LOA_PARAM, responseFromHub.getAuthnContext().get().name());
+            }
+            if (gaClientId != null && !gaClientId.isEmpty()) {
+                location.queryParam(Urls.Params.GA_CLIENT_ID, gaClientId);
             }
             final Response.ResponseBuilder responseBuilder = Response.seeOther(location.build());
             if(responseFromHub.getSessionId().isPresent()) {
@@ -81,7 +86,7 @@ public class AuthnResponseReceiverResource {
 
         } else {
             // user account creation
-            final TestRpUserAccountCreatedView testRpUserAccountCreatedView = new TestRpUserAccountCreatedView(testRpConfiguration.getJavascriptPath(), testRpConfiguration.getStylesheetsPath(), testRpConfiguration.getImagesPath(), responseFromHub.getSession().get(), responseFromHub.getAttributes(), responseFromHub.getAuthnContext().get().name());
+            final TestRpUserAccountCreatedView testRpUserAccountCreatedView = new TestRpUserAccountCreatedView(testRpConfiguration.getJavascriptPath(), testRpConfiguration.getStylesheetsPath(), testRpConfiguration.getImagesPath(), responseFromHub.getSession().get(), responseFromHub.getAttributes(), responseFromHub.getAuthnContext().get().name(), testRpConfiguration.getCrossGovGaTrackerId());
             return Response.ok(testRpUserAccountCreatedView)
                     .cookie(new NewCookie(TEST_RP_SESSION_COOKIE_NAME, responseFromHub.getSessionId().get().getSessionId()))
                     .build();

@@ -28,16 +28,19 @@
     </style>
 </head>
 <body>
-<form class='verify-saml-form' action="${targetUri}" method="POST">
-       <h1>Continue to next step</h1>
-       <p>Because Javascript is not enabled on your browser, you must press the continue button</p>
-    <input type="hidden" value="${body}" name="SAMLRequest"/>
-    <input type="hidden" value="${relayState}" name="RelayState"/>
-    <#if showJourneyHint>
-        <input type="hidden" value="${journeyHint}" name="journey_hint"/>
-    </#if>
-    <button class='verify-button' id="continue-button">Continue</button>
-</form>
-<script type="text/javascript" src="/assets/scripts/saml-redirect-auto-submit.js"></script>
+    <span style="display: none;" id="cross-gov-ga-tracker-id">${ crossGovGaTrackerId }</span>
+
+    <form class='verify-saml-form' action="${targetUri}" method="POST">
+        <h1>Continue to next step</h1>
+        <p>Because Javascript is not enabled on your browser, you must press the continue button</p>
+        <input type="hidden" value="${body}" name="SAMLRequest"/>
+        <input type="hidden" value="${relayState}" name="RelayState"/>
+        <#if showJourneyHint>
+            <input type="hidden" value="${journeyHint}" name="journey_hint"/>
+        </#if>
+        <button class='verify-button' id="continue-button">Continue</button>
+    </form>
+    <script type="text/javascript" src="/assets/scripts/ga.js"></script>
+    <script type="text/javascript" src="/assets/scripts/saml-redirect-auto-submit.js"></script>
 </body>
 </html>
