@@ -86,7 +86,7 @@ public class AuthnResponseReceiverResource {
 
         } else {
             // user account creation
-            final TestRpUserAccountCreatedView testRpUserAccountCreatedView = new TestRpUserAccountCreatedView(testRpConfiguration.getJavascriptPath(), testRpConfiguration.getStylesheetsPath(), testRpConfiguration.getImagesPath(), responseFromHub.getSession().get(), responseFromHub.getAttributes(), responseFromHub.getAuthnContext().get().name());
+            final TestRpUserAccountCreatedView testRpUserAccountCreatedView = new TestRpUserAccountCreatedView(testRpConfiguration.getJavascriptPath(), testRpConfiguration.getStylesheetsPath(), testRpConfiguration.getImagesPath(), responseFromHub.getSession().get(), responseFromHub.getAttributes(), responseFromHub.getAuthnContext().get().name(), testRpConfiguration.getCrossGovGaTrackerId());
             return Response.ok(testRpUserAccountCreatedView)
                     .cookie(new NewCookie(TEST_RP_SESSION_COOKIE_NAME, responseFromHub.getSessionId().get().getSessionId()))
                     .build();
