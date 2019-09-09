@@ -4,4 +4,5 @@ window.setTimeout(function () {
     document.forms[0].removeAttribute("style");
 }, 5000);
 
-document.forms[0].submit();
+var submit = document.getElementById('continue-button');
+if (submit) submit.click();

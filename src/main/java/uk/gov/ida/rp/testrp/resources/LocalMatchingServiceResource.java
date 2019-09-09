@@ -40,5 +40,4 @@ public class LocalMatchingServiceResource {
     public UnknownUserCreationResponseDto post(@NotNull UnknownUserCreationRequestDto request) {
         return matchingServiceRequestHandler.handleUserAccountCreationRequest(request);
     }
-
 }

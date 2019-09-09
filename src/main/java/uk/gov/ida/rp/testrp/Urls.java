@@ -50,6 +50,8 @@ public interface Urls {
         String EIDAS_PARAM = "eidas";
         String NO_MATCH = "no-match";
         String FAIL_ACCOUNT_CREATION = "fail-account-creation";
+
+        String GA_CLIENT_ID = "_ga";
     }
 
 }
