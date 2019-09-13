@@ -7,8 +7,8 @@ public class TestRpTokenServiceUnavailablePageView extends TestRpView {
     private final Optional<String> errorHeader;
     private final Optional<String> errorMessage;
 
-    public TestRpTokenServiceUnavailablePageView(String javascriptBase, String stylesheetsBase, String imagesBase, String crossGovGaTrackerId) {
-        super(javascriptBase, stylesheetsBase, imagesBase, null, "tokenServiceUnavailablePage.jade", crossGovGaTrackerId);
+    public TestRpTokenServiceUnavailablePageView(String javascriptBase, String stylesheetsBase, String imagesBase) {
+        super(javascriptBase, stylesheetsBase, imagesBase, null, "tokenServiceUnavailablePage.jade");
         errorHeader = Optional.empty();
         errorMessage = Optional.of("We are unable to process your request right now. Please try again soon");
     }

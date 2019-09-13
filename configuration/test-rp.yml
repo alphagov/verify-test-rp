@@ -75,5 +75,3 @@ imagesPath: /assets/images
 privateBetaUserAccessRestrictionEnabled: ${PRIVATE_BETA_USER_ACCESS_RESTRICTION_ENABLED}
 
 shouldShowStartWithEidasButton: ${SHOULD_SHOW_START_WITH_EIDAS_BUTTON}
-
-crossGovGaTrackerId: ${CROSS_GOV_GA_TRACKER_ID:-UA-XXXXX-Y}

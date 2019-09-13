@@ -133,10 +133,6 @@ public class TestRpConfiguration extends Configuration implements AssetCacheConf
     @JsonProperty
     protected int tokenEpoch = 1;
 
-    @JsonProperty
-    protected String crossGovGaTrackerId = "";
-
-
     protected TestRpConfiguration() {}
 
     public String getHubEntityId() {
@@ -230,10 +226,6 @@ public class TestRpConfiguration extends Configuration implements AssetCacheConf
 
     public int getTokenEpoch() {
         return tokenEpoch;
-    }
-
-    public String getCrossGovGaTrackerId() {
-        return crossGovGaTrackerId;
     }
 
 }

@@ -13,11 +13,10 @@ public class SecurityHeadersFilter implements ContainerResponseFilter {
         responseContext.getHeaders().add("X-Content-Type-Options", "nosniff");
         final String contentSecurityPolicy = "default-src 'self'; " +
                 "font-src data:; " +
-                "img-src 'self' www.google-analytics.com; " +
+                "img-src 'self'; " +
                 "object-src 'none'; " +
                 "style-src 'self' 'unsafe-inline'; " +
-                "script-src 'self' www.google-analytics.com; " +
-                "connect-src 'self' www.google-analytics.com;";
+                "script-src 'self';";
         responseContext.getHeaders().add("Content-Security-Policy", contentSecurityPolicy);
     }
 }

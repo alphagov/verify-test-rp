@@ -15,15 +15,12 @@ public class TestRpView extends View {
     private final URI imagesBase;
     private final boolean isUserAuthenticated;
 
-    private final String crossGovGaTrackerId;
-
     public TestRpView(
             final String javascriptBase,
             final String stylesheetsBase,
             final String imagesBase,
             final Session session,
-            final String templateName,
-            final String crossGovGaTrackerId) {
+            final String templateName) {
 
         super(templateName);
 
@@ -33,7 +30,6 @@ public class TestRpView extends View {
         this.stylesheetsBase = UriBuilder.fromPath(stylesheetsBase).build();
         this.imagesBase = UriBuilder.fromPath(imagesBase).build();
         this.isUserAuthenticated = isUserAuthenticated();
-        this.crossGovGaTrackerId = crossGovGaTrackerId;
     }
 
     public URI getJavascriptBase() {
@@ -55,9 +51,4 @@ public class TestRpView extends View {
     public boolean isUserAuthenticated(){
         return session != null;
     }
-
-    public String getCrossGovGaTrackerId() {
-        return crossGovGaTrackerId;
-    }
-
 }
