@@ -26,6 +26,7 @@
         background-color: #00692f;
       }
     </style>
+    <script type="text/javascript" src="/assets/scripts/ga.js"></script>
 </head>
 <body>
     <span style="display: none;" id="cross-gov-ga-tracker-id">${ crossGovGaTrackerId }</span>
