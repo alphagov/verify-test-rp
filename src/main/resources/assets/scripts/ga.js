@@ -1,4 +1,4 @@
-var crossGovGaTrackerId = document.getElementById("cross-gov-ga-tracker-id").innerText;
+var crossGovGaTrackerId = document.getElementById("cross-gov-ga-tracker-id");
 if (crossGovGaTrackerId) {
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -9,7 +9,7 @@ if (crossGovGaTrackerId) {
         "www.gov.uk",
         "localhost"
     ];
-    window.ga("create", crossGovGaTrackerId, "auto", "govuk_shared", {"allowLinker": true});
+    window.ga("create", crossGovGaTrackerId.innerText, "auto", "govuk_shared", {"allowLinker": true});
     window.ga("govuk_shared.require", "linker");
     window.ga("govuk_shared.linker.set", "anonymizeIp", true);
     window.ga("govuk_shared.linker:autoLink", domainList, false, true);
