@@ -18,10 +18,9 @@ public class TestRpLandingPageView extends TestRpView {
             final Session session,
             final Optional<String> errorHeader,
             final Optional<String> errorMessage,
-            boolean shouldShowStartWithEidasButton,
-            String crossGovGaTrackerId) {
+            boolean shouldShowStartWithEidasButton) {
 
-        super(javascriptBase, stylesheetsBase, imagesBase, session, "landingPage.jade", crossGovGaTrackerId);
+        super(javascriptBase, stylesheetsBase, imagesBase, session, "landingPage.jade");
 
         this.errorHeader = errorHeader;
         this.errorMessage = errorMessage;

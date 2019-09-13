@@ -8,8 +8,8 @@ public class CookiesInfoView extends TestRpView {
     private final Optional<String> errorHeader;
     private final Optional<String> errorMessage;
 
-    public CookiesInfoView(String javascriptBase, String stylesheetsBase, String imagesBase, String crossGovGaTrackerId) {
-        super(javascriptBase, stylesheetsBase, imagesBase, null, "cookiesInfo.jade", crossGovGaTrackerId);
+    public CookiesInfoView(String javascriptBase, String stylesheetsBase, String imagesBase) {
+        super(javascriptBase, stylesheetsBase, imagesBase, null, "cookiesInfo.jade");
         errorHeader = Optional.empty();
         errorMessage = Optional.empty();
     }

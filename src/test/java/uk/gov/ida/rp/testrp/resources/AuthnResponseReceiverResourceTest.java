@@ -47,7 +47,7 @@ public class AuthnResponseReceiverResourceTest {
         when(authnResponseReceiverHandler.handleResponse(eq(samlResponse), any())).thenReturn(responseFromHub);
 
         AuthnResponseReceiverResource resource = new AuthnResponseReceiverResource(authnResponseReceiverHandler, testRpConfiguration);
-        Response response = resource.doLogin(samlResponse, SessionId.createNewSessionId(), null);
+        Response response = resource.doLogin(samlResponse, SessionId.createNewSessionId());
         assertThat(response.getLocation().toString()).isEqualTo("/test-rp?errorCode=NoAuthenticationContext");
     }
 }

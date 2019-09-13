@@ -90,5 +90,3 @@ imagesPath: /assets/images
 privateBetaUserAccessRestrictionEnabled: ${TEST_RP_PRIVATE_BETA_USER_ACCESS_RESTRICTION_ENABLED:-false}
 
 shouldShowStartWithEidasButton: ${TEST_RP_SHOULD_SHOW_START_WITH_EIDAS_BUTTON:-true}
-
-crossGovGaTrackerId: ${CROSS_GOV_GA_TRACKER_ID:-UA-XXXXX-Y}

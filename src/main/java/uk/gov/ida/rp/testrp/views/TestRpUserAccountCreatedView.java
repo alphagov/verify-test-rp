@@ -12,8 +12,8 @@ public class TestRpUserAccountCreatedView extends TestRpView {
     private final List<String> attributes;
     private final String loa;
 
-    public TestRpUserAccountCreatedView(String javascriptBase, String stylesheetsBase, String imagesBase, Session session, List<String> attributes, String loa, String crossGovGaTrackerId) {
-        super(javascriptBase, stylesheetsBase, imagesBase, session, "userAccountCreated.jade", crossGovGaTrackerId);
+    public TestRpUserAccountCreatedView(String javascriptBase, String stylesheetsBase, String imagesBase, Session session, List<String> attributes, String loa) {
+        super(javascriptBase, stylesheetsBase, imagesBase, session, "userAccountCreated.jade");
         this.attributes = attributes;
         this.loa = loa;
     }
