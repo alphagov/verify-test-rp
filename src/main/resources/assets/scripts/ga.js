@@ -14,7 +14,4 @@ if (crossGovGaTrackerId) {
     window.ga("govuk_shared.linker.set", "anonymizeIp", true);
     window.ga("govuk_shared.linker:autoLink", domainList, false, true);
     window.ga("govuk_shared.send", "pageview");
-    window.ga(function() {
-        if (window.autoSubmit) window.autoSubmit();
-    });
 }

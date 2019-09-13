@@ -11,4 +11,10 @@ window.autoSubmit = function() {
     if (submit) submit.click();
 };
 
-if (!window.ga) window.autoSubmit();
+if (window.ga) {
+    window.ga(function() {
+        window.autoSubmit();
+    });
+} else {
+    window.autoSubmit();
+}
