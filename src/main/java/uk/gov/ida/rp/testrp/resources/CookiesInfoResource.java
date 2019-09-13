@@ -23,7 +23,7 @@ public class CookiesInfoResource {
 
     @GET
     public CookiesInfoView getCookieInfo() {
-        return new CookiesInfoView(testRpConfiguration.getJavascriptPath(), testRpConfiguration.getStylesheetsPath(), testRpConfiguration.getImagesPath());
+        return new CookiesInfoView(testRpConfiguration.getJavascriptPath(), testRpConfiguration.getStylesheetsPath(), testRpConfiguration.getImagesPath(), testRpConfiguration.getCrossGovGaTrackerId());
     }
 
 }

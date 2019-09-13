@@ -12,16 +12,19 @@ public class SamlRedirectView extends View {
     private String responseBody;
     private SessionId relayState;
     private final Optional<JourneyHint> journeyHint;
+    private final String crossGovGaTrackerId;
 
     public SamlRedirectView(URI targetUri,
                             String base64EncodedResponseBody,
                             SessionId relayState,
-                            Optional<JourneyHint> journeyHint) {
+                            Optional<JourneyHint> journeyHint,
+                            String crossGovGaTrackerId) {
         super("samlRedirectView.ftl");
         this.targetUri = targetUri;
         this.responseBody = base64EncodedResponseBody;
         this.relayState = relayState;
         this.journeyHint = journeyHint;
+        this.crossGovGaTrackerId = crossGovGaTrackerId;
     }
 
     public URI getTargetUri() {
@@ -42,5 +45,9 @@ public class SamlRedirectView extends View {
 
     public String getJourneyHint() {
         return journeyHint.isPresent()?journeyHint.get().name():"";
+    }
+
+    public String getCrossGovGaTrackerId() {
+        return crossGovGaTrackerId;
     }
 }

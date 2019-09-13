@@ -30,6 +30,6 @@ public class InvalidAccessTokenExceptionMapper implements ExceptionMapper<Invali
         UUID eventId = UUID.randomUUID();
         LOG.error(MessageFormat.format("{0} - Exception while processing request.", eventId), exception);
 
-        return Response.status(Response.Status.FORBIDDEN).entity(new TestRpPrivateBetaPageView(configuration.getJavascriptPath(), configuration.getStylesheetsPath(), configuration.getImagesPath())).build();
+        return Response.status(Response.Status.FORBIDDEN).entity(new TestRpPrivateBetaPageView(configuration.getJavascriptPath(), configuration.getStylesheetsPath(), configuration.getImagesPath(), configuration.getCrossGovGaTrackerId())).build();
     }
 }

@@ -30,6 +30,6 @@ public class TokenServiceUnavailableExceptionMapper implements ExceptionMapper<T
         UUID eventId = UUID.randomUUID();
         LOG.error(MessageFormat.format("{0} - Exception while processing request.", eventId), exception);
 
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new TestRpTokenServiceUnavailablePageView(configuration.getJavascriptPath(), configuration.getStylesheetsPath(), configuration.getImagesPath())).build();
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new TestRpTokenServiceUnavailablePageView(configuration.getJavascriptPath(), configuration.getStylesheetsPath(), configuration.getImagesPath(), configuration.getCrossGovGaTrackerId())).build();
     }
 }
