@@ -21,9 +21,10 @@ public class TestRpSuccessPageView extends TestRpView {
             final Optional<String> errorHeader,
             final Optional<String> errorMessage,
             final Optional<String> rpName,
-            final Optional<LevelOfAssuranceDto> loa) {
+            final Optional<LevelOfAssuranceDto> loa,
+            final String crossGovGaTrackerId) {
 
-        super(javascriptBase, stylesheetsBase, imagesBase, session, "successPage.jade");
+        super(javascriptBase, stylesheetsBase, imagesBase, session, "successPage.jade", crossGovGaTrackerId);
         this.errorHeader = errorHeader;
         this.errorMessage = errorMessage;
         this.rpName = rpName;

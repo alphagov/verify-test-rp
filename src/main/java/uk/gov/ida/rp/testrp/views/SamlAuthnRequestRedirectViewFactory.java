@@ -2,6 +2,7 @@ package uk.gov.ida.rp.testrp.views;
 
 import com.google.common.net.HttpHeaders;
 import uk.gov.ida.common.SessionId;
+import uk.gov.ida.rp.testrp.TestRpConfiguration;
 import uk.gov.ida.rp.testrp.domain.JourneyHint;
 
 import javax.inject.Inject;
@@ -14,9 +15,11 @@ import java.util.Optional;
  */
 public class SamlAuthnRequestRedirectViewFactory {
 
+    private final TestRpConfiguration testRpConfiguration;
+
     @Inject
-    public SamlAuthnRequestRedirectViewFactory(){
-        // intentionally blank
+    public SamlAuthnRequestRedirectViewFactory(TestRpConfiguration testRpConfiguration){
+        this.testRpConfiguration = testRpConfiguration;
     }
 
     public Response sendSamlMessage(String messageToSend, SessionId relayState, URI targetUriFromSamlEndpoint, Optional<JourneyHint> journeyHint) {
@@ -29,7 +32,7 @@ public class SamlAuthnRequestRedirectViewFactory {
             URI targetUriFromSamlEndpoint,
             Optional<JourneyHint> journeyHint) {
 
-        SamlRedirectView samlFormPostingView = new SamlRedirectView(targetUriFromSamlEndpoint, samlMessage, relayState, journeyHint);
+        SamlRedirectView samlFormPostingView = new SamlRedirectView(targetUriFromSamlEndpoint, samlMessage, relayState, journeyHint, testRpConfiguration.getCrossGovGaTrackerId());
         return Response.ok(samlFormPostingView)
             .header(HttpHeaders.CACHE_CONTROL, "no-cache, no-store")
             .header(HttpHeaders.PRAGMA, "no-cache")
