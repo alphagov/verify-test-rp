@@ -133,6 +133,10 @@ public class TestRpConfiguration extends Configuration implements AssetCacheConf
     @JsonProperty
     protected int tokenEpoch = 1;
 
+    @JsonProperty
+    @Valid
+    protected boolean isNonMatching = false;
+
     protected TestRpConfiguration() {}
 
     public String getHubEntityId() {
@@ -227,5 +231,7 @@ public class TestRpConfiguration extends Configuration implements AssetCacheConf
     public int getTokenEpoch() {
         return tokenEpoch;
     }
+
+    public boolean getIsNonMatching() { return isNonMatching; }
 
 }

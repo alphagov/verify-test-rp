@@ -1,5 +1,6 @@
 package uk.gov.ida.rp.testrp.resources;
 
+import org.json.JSONObject;
 import uk.gov.ida.common.SessionId;
 import uk.gov.ida.rp.testrp.TestRpConfiguration;
 import uk.gov.ida.rp.testrp.Urls;
@@ -7,6 +8,9 @@ import uk.gov.ida.rp.testrp.controllogic.AuthnResponseReceiverHandler;
 import uk.gov.ida.rp.testrp.domain.ResponseFromHub;
 import uk.gov.ida.rp.testrp.views.TestRpUserAccountCreatedView;
 import uk.gov.ida.saml.core.domain.TransactionIdaStatus;
+import uk.gov.ida.saml.deserializers.OpenSamlXMLObjectUnmarshaller;
+import uk.gov.ida.saml.deserializers.parser.SamlObjectParser;
+import uk.gov.ida.saml.deserializers.validators.Base64StringDecoder;
 
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
@@ -19,7 +23,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
+import java.io.IOException;
 import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.Optional;
 
 import static java.text.MessageFormat.format;
@@ -47,7 +55,31 @@ public class AuthnResponseReceiverResource {
     @POST
     public Response doLogin(
             @FormParam(Urls.Params.SAML_RESPONSE_PARAM) @NotNull String samlResponse,
-            @FormParam(Urls.Params.RELAY_STATE_PARAM) SessionId relayState) {
+            @FormParam(Urls.Params.RELAY_STATE_PARAM) SessionId relayState) throws IOException, InterruptedException {
+
+        if (testRpConfiguration.getIsNonMatching()) {
+            Base64StringDecoder base64StringDecoder = new Base64StringDecoder();
+            final String decodedInput = base64StringDecoder.decode(samlResponse);
+            OpenSamlXMLObjectUnmarshaller<org.opensaml.saml.saml2.core.Response> objectMarshaller = new OpenSamlXMLObjectUnmarshaller(new SamlObjectParser());
+            org.opensaml.saml.saml2.core.Response response1 = objectMarshaller.fromString(decodedInput);
+
+
+            JSONObject jo = new JSONObject();
+            jo.put("samlResponse", samlResponse);
+            jo.put("requestId", response1.getInResponseTo());
+            jo.put("levelOfAssurance", "LEVEL_2");
+
+            HttpClient client = HttpClient.newBuilder()
+                    .build();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("http://localhost:50400/translate-response"))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(jo.toString()))
+                    .build();
+            HttpResponse<String> response =
+                    client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println(response.toString());
+        }
 
         ResponseFromHub responseFromHub = authnResponseReceiverHandler.handleResponse(samlResponse, Optional.ofNullable(relayState));
 
