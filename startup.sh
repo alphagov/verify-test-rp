@@ -13,10 +13,6 @@ fi
 source ../verify-local-startup/lib/services.sh
 source ../verify-local-startup/config/env.sh
 
-if test ! "$1" == "skip-build"; then
-    ./gradlew clean build copyToLib
-fi
-
-mkdir -p logs
-start_service verify-test-rp . configuration/local/test-rp.yml $TEST_RP_PORT
+build_service ../verify-test-rp
+start_service verify-test-rp ../verify-test-rp configuration/local/test-rp.yml $TEST_RP_PORT
 wait
