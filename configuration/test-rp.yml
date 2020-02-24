@@ -33,7 +33,7 @@ allowInsecureMetadataLocation: true
 
 msaMetadataUri: ${TEST_RP_MSA_METADATA_URL}
 
-msaEntityId: http://www.test-rp-ms.gov.uk/SAML2/MD
+msaEntityId: ${MSA_ENTITY_ID:-http://www.test-rp-ms.gov.uk/SAML2/MD}
 hubEntityId: ${METADATA_ENTITY_ID}
 
 forceAuthentication: false

@@ -1,0 +1,30 @@
+# test-rp config for supporting msa backwards-compatibility testing in
+# staging
+---
+applications:
+  - name: test-rp-staging-backcompat-${INDEX}
+    routes:
+      - route: test-rp-staging-backcompat-${INDEX}.apps.internal
+      - route: test-rp-staging-backcompat-${INDEX}.cloudapps.digital
+      - route: test-rp-staging-backcompat-${INDEX}.cloudapps.digital/private
+    memory: 1G
+    buildpack: java_buildpack
+    env:
+      JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 11.+ } }'
+      CONFIG_FILE: /app/test-rp/test-rp.yml
+      LOG_PATH: /app/test-rp/logs
+      LOG_LEVEL: INFO
+      TEST_RP_URL: https://test-rp-staging-backcompat-${INDEX}.cloudapps.digital
+      TEST_RP_MSA_METADATA_URL: http://test-rp-msa-staging-backcompat-${INDEX}.apps.internal:8080/matching-service/SAML2/metadata
+      MSA_ENTITY_ID: $MSA_ENTITY_ID
+      METADATA_ENTITY_ID: $METADATA_ENTITY_ID
+      TRUSTSTORE_PATH: /app/test-rp/truststores/$TRUSTSTORE_NAME
+      TRUSTSTORE_PASSWORD: $TRUSTSTORE_PASSWORD
+      PRIVATE_BETA_USER_ACCESS_RESTRICTION_ENABLED: $PRIVATE_BETA
+      SHOULD_SHOW_START_WITH_EIDAS_BUTTON: true
+      ENCRYPTION_KEY: $ENCRYPTION_KEY
+      ENCRYPTION_CERT: $ENCRYPTION_CERT
+      SIGNING_KEY: $SIGNING_KEY
+      SIGNING_CERT: $SIGNING_CERT
+    services:
+      - logit-staging
