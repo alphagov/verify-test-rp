@@ -17,7 +17,7 @@ dontCacheFreemarkerTemplates: false
 cookieName: test-rp-session
 
 saml:
-  entityId: http://www.%s.gov.uk/SAML2/MD
+  entityId: ${TEST_RP_ENTITY_ID:-http://www.%s.gov.uk/SAML2/MD}
   expectedDestination: ${TEST_RP_URL}
 
 httpClient:
@@ -33,7 +33,7 @@ allowInsecureMetadataLocation: true
 
 msaMetadataUri: ${TEST_RP_MSA_METADATA_URL}
 
-msaEntityId: http://www.test-rp-ms.gov.uk/SAML2/MD
+msaEntityId: ${MSA_ENTITY_ID:-http://www.test-rp-ms.gov.uk/SAML2/MD}
 hubEntityId: ${METADATA_ENTITY_ID}
 
 forceAuthentication: false
