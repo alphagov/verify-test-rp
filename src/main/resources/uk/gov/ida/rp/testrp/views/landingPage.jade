@@ -42,6 +42,10 @@ block content
         | accepts identities to LOA 1 (by default, this service will test LOA 2 journeys)
 
       p
+        input#loa2-loa1-rp(type="radio", name="rp-name-radio", value="loa2-loa1-test-rp")
+        | prefers LOA 2 identities but will accept LOA 1
+
+      p
         input#forceauthn-noc3-rp(type="radio", name="rp-name-radio", value="test-rp-noc3")
         | uses ForceAuthn and no cycle3
 
