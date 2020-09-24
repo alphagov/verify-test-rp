@@ -1,4 +1,4 @@
-FROM gradle:4.7.0-jdk8 as build
+FROM gradle:5.5.1-jdk11 as build
 
 WORKDIR /test-rp
 USER root
@@ -17,7 +17,7 @@ RUN gradle installDist
 ENTRYPOINT ["gradle", "--no-daemon"]
 CMD ["tasks"]
 
-FROM openjdk:8-jre
+FROM openjdk:11-jre
 
 WORKDIR /test-rp
 
