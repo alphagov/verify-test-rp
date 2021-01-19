@@ -1,4 +1,4 @@
-FROM gradle:5.5.1-jdk11 as build
+FROM ghcr.io/alphagov/verify/gradle:gradle-jdk11 as build
 
 WORKDIR /test-rp
 USER root
@@ -17,7 +17,7 @@ RUN gradle installDist
 ENTRYPOINT ["gradle", "--no-daemon"]
 CMD ["tasks"]
 
-FROM openjdk:11-jre
+FROM ghcr.io/alphagov/verify/java:openjdk-11
 
 WORKDIR /test-rp
 
