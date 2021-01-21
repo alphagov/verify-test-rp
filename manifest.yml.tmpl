@@ -14,6 +14,8 @@ applications:
       LOG_LEVEL: INFO
       TEST_RP_URL: https://test-rp-$ENV.cloudapps.digital
       TEST_RP_MSA_METADATA_URL: http://test-rp-msa-$ENV.apps.internal:8080/matching-service/SAML2/metadata
+      TEST_RP_ENTITY_ID: $TEST_RP_ENTITY_ID
+      MSA_ENTITY_ID: $MSA_ENTITY_ID
       METADATA_ENTITY_ID: $METADATA_ENTITY_ID
       TRUSTSTORE_PATH: /app/test-rp/truststores/$TRUSTSTORE_NAME
       TRUSTSTORE_PASSWORD: $TRUSTSTORE_PASSWORD
