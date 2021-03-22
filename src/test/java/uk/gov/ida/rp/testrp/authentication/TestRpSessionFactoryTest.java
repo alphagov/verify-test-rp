@@ -87,7 +87,6 @@ public class TestRpSessionFactoryTest {
 
         when(resourceContext.getResource(ContainerRequestContext.class)).thenReturn(containerRequestContext);
         when(containerRequestContext.getUriInfo()).thenReturn(uriInfo);
-        when(containerRequestContext.getUriInfo().getRequestUri()).thenReturn(new URI("http://uri"));
         when(uriInfo.getQueryParameters()).thenReturn(new MultivaluedHashMap<>());
 
         when(authenticator.authenticate(any())).thenReturn(Optional.of(expectedSession));
@@ -109,32 +108,6 @@ public class TestRpSessionFactoryTest {
 
         Session session = factory.provide();
         Assert.assertEquals(expectedSession, session);
-    }
-
-    @Test
-    public void shouldSendAuthnRequestWithEidasFlagWhenQueryStringContainsEidas() {
-        MultivaluedHashMap<String, String> queryParams = new MultivaluedHashMap<>();
-        queryParams.put("eidas", singletonList("true"));
-
-        when(uriInfo.getQueryParameters()).thenReturn(queryParams);
-
-        Response response = null;
-        try {
-            factory.provide();
-        } catch (WebApplicationException wae){
-            response = wae.getResponse();
-        }
-        Assert.assertNotNull(response);
-
-        verify(authnRequestManager).sendAuthnRequest(any(URI.class),
-                any(),
-                anyString(),
-                any(),
-                eq(Optional.of(JourneyHint.eidas_sign_in)),
-                anyBoolean(),
-                anyBoolean(),
-                anyBoolean()
-        );
     }
 
     /**

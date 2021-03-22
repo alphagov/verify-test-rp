@@ -47,7 +47,6 @@ public interface Urls {
         String JOURNEY_HINT_PARAM = "journey_hint";
         String LOA_PARAM = "loa";
         String ATTRIBUTES_PARAM = "attributes";
-        String EIDAS_PARAM = "eidas";
         String NO_MATCH = "no-match";
         String FAIL_ACCOUNT_CREATION = "fail-account-creation";
 

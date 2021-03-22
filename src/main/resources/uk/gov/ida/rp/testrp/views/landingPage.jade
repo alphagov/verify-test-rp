@@ -54,10 +54,6 @@ block content
         | uses Simpleflow (Shibboleth), not signed by hub
 
       p
-        input#non-eidas-rp(type="radio", name="rp-name-radio", value="test-rp-non-eidas")
-        | is not set up to use eIDAS
-
-      p
         label(for="rp-name") Overridden RP Name
         input#rp-name(type="textbox", name="rp-name")
       h3 Journey hint
@@ -69,7 +65,6 @@ block content
           option(value="registration") Registration
           option(value="uk_idp_sign_in") Sign-in with Verify
           option(value="uk_idp_start") Start Sign in with GOV.UK Verify
-          option(value="eidas_sign_in") Sign-in with eIDAS
           option(value="unspecified") Unspecified
       
       p

@@ -71,7 +71,7 @@ public class TestRpResource {
         tokenService.validate(token);
 
         final PageErrorMessageDetails errorMessageDetails = pageErrorMessageDetailsFactory.getErrorMessage(errorCode);
-        final TestRpLandingPageView testRpLandingPageView = new TestRpLandingPageView(configuration.getJavascriptPath(), configuration.getStylesheetsPath(), configuration.getImagesPath(), null, errorMessageDetails.getHeader(), errorMessageDetails.getMessage(), configuration.getShouldShowStartWithEidasButton(), configuration.getCrossGovGaTrackerId());
+        final TestRpLandingPageView testRpLandingPageView = new TestRpLandingPageView(configuration.getJavascriptPath(), configuration.getStylesheetsPath(), configuration.getImagesPath(), null, errorMessageDetails.getHeader(), errorMessageDetails.getMessage(), configuration.getCrossGovGaTrackerId());
 
         final Response.ResponseBuilder builder = Response
                 .status(Response.Status.OK)
