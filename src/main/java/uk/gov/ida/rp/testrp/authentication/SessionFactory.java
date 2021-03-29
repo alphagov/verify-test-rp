@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import static uk.gov.ida.rp.testrp.Urls.Cookies.TEST_RP_SESSION_COOKIE_NAME;
-import static uk.gov.ida.rp.testrp.Urls.Params.EIDAS_PARAM;
 import static uk.gov.ida.rp.testrp.Urls.Params.FAIL_ACCOUNT_CREATION;
 import static uk.gov.ida.rp.testrp.Urls.Params.JOURNEY_HINT_PARAM;
 import static uk.gov.ida.rp.testrp.Urls.Params.NO_MATCH;
@@ -84,10 +83,6 @@ public class SessionFactory extends AbstractContainerRequestValueFactory<Session
             } else {
                 journeyHint = Optional.empty();
             }
-        }
-
-        if (containsQueryParam(EIDAS_PARAM) && !journeyHint.isPresent()) {
-            journeyHint = Optional.of(JourneyHint.eidas_sign_in);
         }
 
         return getUser(

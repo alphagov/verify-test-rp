@@ -70,5 +70,3 @@ privateBetaUserAccessRestrictionEnabled: false
 assets:
   overrides:
     /assets: test-rp/build/resources/main/assets
-
-shouldShowStartWithEidasButton: true

@@ -119,10 +119,6 @@ public class TestRpConfiguration extends Configuration implements AssetCacheConf
     @Valid
     protected String msaEntityId;
 
-    @JsonProperty
-    @Valid
-    protected boolean shouldShowStartWithEidasButton;
-
     @NotNull
     @Valid
     @JsonProperty
@@ -222,10 +218,6 @@ public class TestRpConfiguration extends Configuration implements AssetCacheConf
 
     public URI getMsaMetadataUri() {
         return msaMetadataUri;
-    }
-
-    public boolean getShouldShowStartWithEidasButton() {
-        return shouldShowStartWithEidasButton;
     }
 
     public int getTokenEpoch() {

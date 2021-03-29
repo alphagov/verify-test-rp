@@ -75,7 +75,7 @@ def dependencyVersions = [
         ida_test_utils: '2.0.0-43',
         ida_dev_pki: '1.1.0-37',
         opensaml_version: "$opensaml",
-        saml_libs_version: "$opensaml-201"
+        saml_libs_version: "$opensaml-250"
 ]
 
 configurations {
