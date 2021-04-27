@@ -2,27 +2,18 @@ buildscript {
     repositories {
         if (System.getenv('VERIFY_USE_PUBLIC_BINARIES') == 'true') {
             logger.warn('Production builds MUST NOT be built with public binaries.\nUse artifactory/allowed-repos for production builds.\n\n')
-            maven { url 'https://dl.bintray.com/alphagov/maven-test' }
             maven { url 'https://build.shibboleth.net/nexus/content/repositories/releases' }
-            jcenter()
+            mavenCentral()
         }
         else {
             maven { url 'https://gds.jfrog.io/artifactory/allowed-repos' }
         }
     }
-    dependencies {
-        classpath 'uk.gov.ida:ida-gradle:1.1.0-23',
-                  'com.github.ben-manes:gradle-versions-plugin:0.15.0'
-    }
 }
-
-apply plugin: 'com.github.ben-manes.versions'
 
 group = "uk.gov.ida"
 
-apply from: 'idea.gradle'
 apply plugin: 'idea'
-
 apply plugin: 'java'
 apply plugin: 'jacoco'
 apply plugin: 'idea'
@@ -34,10 +25,8 @@ compileTestJava.options.encoding = "UTF-8"
 repositories {
     if (System.getenv('VERIFY_USE_PUBLIC_BINARIES') == 'true') {
         logger.warn('Production builds MUST NOT be built with public binaries.\nUse artifactory/allowed-repos for production builds.\n\n')
-        maven { url 'https://dl.bintray.com/alphagov/maven' } // For dropwizard-logstash
-        maven { url 'https://dl.bintray.com/alphagov/maven-test' } // For other public verify binaries
         maven { url 'https://build.shibboleth.net/nexus/content/repositories/releases' }
-        jcenter()
+        mavenCentral()
     }
     else {
         maven { url 'https://gds.jfrog.io/artifactory/allowed-repos' }
@@ -65,30 +54,30 @@ distZip {
 }
 
 ext {
-    opensaml = '3.4.2'
+    opensaml = '3.4.3'
 }
 
 def dependencyVersions = [
-        ida_utils:336,
+        verify_utils:395,
         dropwizard:'1.3.8',
-        dropwizard_jade:10517,
-        ida_test_utils: '2.0.0-43',
-        ida_dev_pki: '1.1.0-37',
+        dropwizard_jade:10528,
+        verify_test_utils: '2.0.0-64',
+        verify_dev_pki: '2.0.0-45',
         opensaml_version: "$opensaml",
-        saml_libs_version: "$opensaml-250"
+        saml_libs_version: "$opensaml-254",
+        hub_saml_version: "$opensaml-15823"
 ]
 
 configurations {
     common
     dropwizard
     frontend
-    ida_utils
+    verify_utils
     jade
     jwt
-    ida_test_utils
+    verify_test_utils
     soap
     saml
-    saml_test
     test_deps_compile
 }
 
@@ -126,39 +115,38 @@ dependencies {
             'org.freemarker:freemarker:2.3.27-incubating',
             'org.jsoup:jsoup:1.6.1'
 
-    ida_utils   'uk.gov.ida:common-utils:2.0.0-' + dependencyVersions.ida_utils,
-            'uk.gov.ida:rest-utils:2.0.0-' + dependencyVersions.ida_utils,
-            'uk.gov.ida:security-utils:2.0.0-' + dependencyVersions.ida_utils
+    verify_utils 'uk.gov.ida:common-utils:2.0.0-' + dependencyVersions.verify_utils,
+            'uk.gov.ida:rest-utils:2.0.0-' + dependencyVersions.verify_utils,
+            'uk.gov.ida:security-utils:2.0.0-' + dependencyVersions.verify_utils
 
     jade 'uk.gov.ida:dropwizard-jade:1.3.8-' + dependencyVersions.dropwizard_jade
 
     jwt 'com.nimbusds:nimbus-jose-jwt:6.4'
 
-    ida_test_utils 'uk.gov.ida:common-test-utils:' + dependencyVersions.ida_test_utils
+    verify_test_utils 'uk.gov.ida:common-test-utils:' + dependencyVersions.verify_test_utils
 
     saml    'org.opensaml:opensaml-core:' + dependencyVersions.opensaml_version,
             'org.opensaml:opensaml-saml-impl:' + dependencyVersions.opensaml_version,
             'uk.gov.ida:saml-lib:' + dependencyVersions.saml_libs_version,
-            'uk.gov.ida:hub-saml:3.4.2-15757',
-            'uk.gov.ida:hub-saml-test-utils:3.4.2-15757'
-
-    saml_test 'uk.gov.ida:saml-test:' + dependencyVersions.saml_libs_version
+            'uk.gov.ida:saml-test:' + dependencyVersions.saml_libs_version,
+            'uk.gov.ida:hub-saml:' + dependencyVersions.hub_saml_version
 
     soap('org.apache.ws.commons:ws-commons-util:1.0.1') { transitive = false }
 
-    testCompile configurations.ida_test_utils,
-            configurations.saml_test,
+    testImplementation configurations.verify_test_utils,
             configurations.test_deps_compile,
-            'uk.gov.ida:ida-dev-pki:' + dependencyVersions.ida_dev_pki,
+            'uk.gov.ida:verify-dev-pki:' + dependencyVersions.verify_dev_pki,
             'junit:junit:4.11',
             'org.mockito:mockito-core:2.23.4',
             'io.dropwizard:dropwizard-testing:' + dependencyVersions.dropwizard,
             'org.assertj:assertj-guava:1.1.0',
-            'org.assertj:assertj-joda-time:1.1.0'
+            'org.assertj:assertj-joda-time:1.1.0',
+            'commons-io:commons-io:2.8.0',
+            'org.json:json:20210307'
 
-    compile configurations.common,
+    implementation configurations.common,
             configurations.dropwizard,
-            configurations.ida_utils,
+            configurations.verify_utils,
             configurations.frontend,
             configurations.jade,
             configurations.saml {
@@ -173,7 +161,7 @@ dependencies {
         test_deps_compile(dep) { transitive = false }
     }
 
-    testCompile "com.github.tomakehurst:wiremock-standalone:2.23.2"
+    testImplementation "com.github.tomakehurst:wiremock-standalone:2.23.2"
 }
 
 sourceSets {
