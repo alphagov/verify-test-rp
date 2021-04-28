@@ -1,22 +1,6 @@
-buildscript {
-    repositories {
-        if (System.getenv('VERIFY_USE_PUBLIC_BINARIES') == 'true') {
-            logger.warn('Production builds MUST NOT be built with public binaries.\nUse artifactory/allowed-repos for production builds.\n\n')
-            maven { url 'https://build.shibboleth.net/nexus/content/repositories/releases' }
-            mavenCentral()
-        }
-        else {
-            maven { url 'https://gds.jfrog.io/artifactory/allowed-repos' }
-        }
-    }
-}
-
 group = "uk.gov.ida"
 
-apply plugin: 'idea'
 apply plugin: 'java'
-apply plugin: 'jacoco'
-apply plugin: 'idea'
 apply plugin: 'application'
 
 compileJava.options.encoding = "UTF-8"
@@ -25,7 +9,6 @@ compileTestJava.options.encoding = "UTF-8"
 repositories {
     if (System.getenv('VERIFY_USE_PUBLIC_BINARIES') == 'true') {
         logger.warn('Production builds MUST NOT be built with public binaries.\nUse artifactory/allowed-repos for production builds.\n\n')
-        maven { url 'https://build.shibboleth.net/nexus/content/repositories/releases' }
         mavenCentral()
     }
     else {
