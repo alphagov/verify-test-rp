@@ -37,7 +37,7 @@ distZip {
 }
 
 ext {
-    opensaml = '3.4.3'
+    opensaml = '3.4.6'
 }
 
 def dependencyVersions = [
@@ -47,7 +47,7 @@ def dependencyVersions = [
         verify_test_utils: '2.0.0-64',
         verify_dev_pki: '2.0.0-45',
         opensaml_version: "$opensaml",
-        saml_libs_version: "$opensaml-254",
+        saml_libs_version: "$opensaml-258",
         hub_saml_version: "$opensaml-15823"
 ]
 
