@@ -1,7 +1,9 @@
 ## verify-test-rp
 
-[![Build Status](https://travis-ci.org/alphagov/verify-test-rp.svg?branch=master)](https://travis-ci.org/alphagov/verify-test-rp)
-
+>**GOV.UK Verify has closed**
+>
+>This repository is out of date and has been archived
+>
 A stub relying party used when testing the GOV.UK Verify hub.
 
 * This service is only for internal testing and is not representative of how a service should connect to Verify. For an authorative implementation of how a service can connect to Verify please see the [Technical Onboarding Guide](https://alphagov.github.io/rp-onboarding-tech-docs/) and the [Verify Service Provider](https://www.github.com/alphagov/verify-service-provider).
